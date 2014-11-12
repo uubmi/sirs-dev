@@ -139,6 +139,19 @@
 				var currentPatientName = url('?viewing');
 			</script-->
 			<input type="button" value="Log Out?" onclick="authentication()" />
+			
+			<div id="developmentTesting" >
+				<input type="button" value="Run Development Test" onclick="testCases();" />
+			
+				<script src="sirs-cds.js" charset="utf-8"></script>
+				<script>
+					//for development testing
+					function testCases() {
+						testSIRS();
+					}
+				</script>
+			</div>
+			
 		</div>
 	</div>
 </body>
