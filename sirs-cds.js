@@ -194,6 +194,10 @@ function checkRule(obsResult, rule) {
             if(value != rule["value"])
                 returnResult = true;
             break;
+		case "doesExist":
+			if(typeof value == 'undefined')
+				returnResult = true;
+			break;
     }    
     return returnResult;
 }

@@ -147,7 +147,10 @@
 				<script>
 					//for development testing
 					function testCases() {
-						testSIRS();
+						for (var i = 0, pat; pat = patients[i++];) {
+							console.log("assessing patient #"+i);
+							testSIRS(pat);
+						}
 					}
 				</script>
 			</div>
