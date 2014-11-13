@@ -19,27 +19,30 @@ var ObservationResult = function(code, codeSystem, codeSystemName, displayName, 
     this.observationEventTime = new ObservationEventTime(time);
 }
 
-var riskObsResultsTest = new Array( // sirs risk
+var missingObsResultsTest = new Array( // sirs risk
     new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","38.5","20110305110000"),
     new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
     new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","33","20110305110000"),
-    new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","12.1","20110305110000"),
-    new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.15","20110305110000")
+    new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","12.1","20110305110000")
+	//,
+    //new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.15","20110305110000")
 );
+
+runCheck(missingObsResultsTest);
 
 function runCheck (oberservationResultsArray) {
 	//will receive pre-transformed patient data
 	//first check for missing data
-	
-	function checkForMissing(patientData) {
+	console.log("here I am "+oberservationResultsArray[4]["observationFocus"]["code"]+"");
+	function checkForMissing( patientData) {
 		//rule encoded for checking for existence of values for each SIRS criteria
 		var missingSirsCriteria = {assessmentPlan :
 			{minRequirement: 1, 
 				rules : new Array (
 				{minRequirement: 1, 
 					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "386725007", "doesExist", "decimal", 0), // Body temperature must exist
+					new Rule("2.16.840.1.113883.6.5", "386725007", "doesExist", "decimal", 0) // Body temperature must exist
 					)
 				},
 				{minRequirement: 1, 
@@ -71,7 +74,7 @@ function runCheck (oberservationResultsArray) {
 	var missingData = checkForMissing(oberservationResultsArray);
 
 	if (missingData.nMetCriteria == 0) { //if nothing is missing just ask for SIRS criteria check and send result
-		SIRScriteriaMessage = function buildSIRScriteriaMessage {
+		SIRScriteriaMessage = function buildSIRScriteriaMessage (){
 			//send SIRS Criteria observation message to relevant knowledge execution engine
 			
 			var knowledgeExecutionEngineResult = assessRules(patientData, sirsCriteria["assessmentPlan"], 0 );
@@ -89,25 +92,26 @@ function runCheck (oberservationResultsArray) {
 		//insert dummy values
 		var patientData_withDummyValues = function () {
 			var nonRiskValues = { // no sirs risk
-				"386725007":"386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000",
-				new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
-				new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
-				new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
-				new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
-				new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
+				"386725007":("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+				"364075005":("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
+				"86290005":("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
+				"373677008":("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
+				"365630000":("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
+				"442113000":("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
 			};
 			for (var i = 0, obs; obs = missingData.metObs[i++]; ) {
 							console.log("  !! old observation!! "+obs["observationFocus"]["displayName"]+": "+obs["observationValue"][		"value"] );
-				for (var j = 0; j>= oberservationResultsArray.length; j++;) {
+				for (var j = 0; j>= oberservationResultsArray.length; j++) {
 					if (obs["observationFocus"]["code"] == oberservationResultsArray[j]["observationFocus"]["code"]) {
 						//replace with dummy nonRiskValue
 						var key = oberservationResultsArray[j]["observationFocus"]["code"];
 						oberservationResultsArray[j] = new ObservationResult(nonRiskValues[code]);
 					}
-				}
-				else {
+					else {
 					
+					}
 				}
+
 				console.log("  !! new observation!! "+obs["observationFocus"]["displayName"]+": "+obs["observationValue"][		"value"] );
 			} 
 		}
