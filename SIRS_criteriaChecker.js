@@ -7,7 +7,7 @@
 
 object.responsePakcage == "";
 
-patientData = {
+patientData = { //from EHR form or JSON from 
 	"patientID":"value";
 	"observation":{};
 	"observation":{};
@@ -18,6 +18,15 @@ oberservationResultsArray = function transformPateintData (patientData) {
 //transform the data for sending vMR-esq compliant message to knowledge execution engine NEED to MOVE TO CDS
 //this Function is critical and the output is the message we specify
 //the implementer of our service will need to modify here to fit their data model
+//look through Local EMR patient model to find the applicable data for the SIRS criteria
+//note: missing values are checked when running runcheck
+
+//THIS IS TO BE ADAPTED LOCALLY TO SUIT THE PARTICULAR EMR pateint data model!!!
+//once this has been run the data is in the expected form - 
+//fingers crossed
+
+
+
 };
 if(runcheck(oberservationResultsArray).criteria == 1) {
 	

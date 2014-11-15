@@ -89,7 +89,7 @@ var Rule = function (codeSystem, code, comparison, valueType, value) {
     this.valueType = valueType;
     this.value = value;
 }
-var sirsCriteria = {assessmentPlan :
+var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
 {minRequirement: 2, 
  rules : new Array (
     {minRequirement: 1, 
@@ -120,13 +120,13 @@ var sirsCriteria = {assessmentPlan :
 },
 actions : "sirs risk"
 };    
-function assessRules(obsResults, assessmentPlan, level) {
+function assessRules(obsResults, assessmentPlan, level) { //execution engine!!!!!
     var criteriaMet = 0;
     var rules = assessmentPlan["rules"];
     var metObsResults = [];
     var assessedResults;
     for(var i = 0, rule; rule = rules[i++];) {
-        if ('undefined' !== typeof (rules[0].comparison) ) {
+        if ('undefined' !== typeof (rules[0].comparison) ) {  
             for (var k = 0, obs; obs = obsResults[k++];) {
                 if (checkRule(obs, rule)) {
 //                    console.log(" criteria met "+rule["code"]+" "+rule["comparison"]+" "+rule["value"]+"("+obs["observationValue"]["value"]+")");
@@ -157,13 +157,14 @@ function assessRules(obsResults, assessmentPlan, level) {
     }
 }
 
-function checkRule(obsResult, rule) {
-    var returnResult = false;
+function checkRule(obsResult, rule) { //execution engine guts!!!!!
+    var returnResult = false; //default is the the rule has not been met
+	//check to see if the rule is applicable to the obsResult
     if (obsResult["observationFocus"]["code"] != rule["code"] 
         || obsResult["observationFocus"]["codeSystem"] != rule["codeSystem"])
             return returnResult;
     var value;
-    switch (rule["valueType"]) {
+    switch (rule["valueType"]) { //changing string to number
         case "decimal": value = parseFloat(obsResult["observationValue"]["value"]);
                         break;
         case "integer": value = parseInt(obsResult["observationValue"]["value"]);
@@ -194,10 +195,12 @@ function checkRule(obsResult, rule) {
             if(value != rule["value"])
                 returnResult = true;
             break;
-		case "doesExist":
-			if(typeof value == 'undefined')
-				returnResult = true;
-			break;
+		//case "doesNotExist":
+		//	if((typeof value == 'undefined') || (obsResult["observationValue"]["value"].length == 0)) 
+			//this is going to trigger SIRS criteria when the observation is empty, so I commented it out
+			//the local CDS is responsible for weather or not the data meets the specifications of the knowledge resource!
+		//		returnResult = true;
+		//	break;
     }    
     return returnResult;
 }
