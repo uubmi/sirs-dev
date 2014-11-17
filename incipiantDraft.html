@@ -38,8 +38,11 @@
 
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <!--I made a new change-->
+  <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
+  
   <script>
-	var patientObjectsArray = [
+	// this is the EMR data and patient models - simplified but different than the SIRS CDSS to demonstrate ability to accommodate any model
+	var patientObjectsArray = [ 
 		{'id':'401','name':'Issac A Lot','gender':'male','temperature':'40'
 			,'heartRate':'120'
 			,'respiratoryRate':'24'
@@ -60,7 +63,7 @@
 			,'bandNeutrophilCount':'default'} //'SIRScriteria':-1 missing values  
 	]; 
 	
-	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patinets':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patinets':{'id':'401','id':'504'}}};
+	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patients':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patients':{'id':'401','id':'504'}}};
 	var currentPatient;
 	var currentClinician;
 	//create drop down based on patientObjects
@@ -110,7 +113,6 @@
 			}
 		}
 		else { el3.style.display = 'none'; } 
-		//if( typeof currentClinician !== 'undefined' ) {el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;}
 		return false; 
 	}
 	
@@ -128,6 +130,12 @@
 				d3.select("#PaCO2").attr("value",+d.PaCO2);
 				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount);
 				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount);
+				
+				checkSIRSvalues({"patientData":d,"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
+				//will append result to patient record
+				//message contains criteria result, which values were bad, instructions for changing view
+				
+				
 				return true;
 			}
 		});
