@@ -21,14 +21,18 @@ oberservationResultsArray = function transformPateintData (patientData) {
 //look through Local EMR patient model to find the applicable data for the SIRS criteria
 //note: missing values are checked when running runcheck
 
-//THIS IS TO BE ADAPTED LOCALLY TO SUIT THE PARTICULAR EMR pateint data model!!!
+//THIS IS TO BE ADAPTED LOCALLY TO SUIT THE PARTICULAR EMR patient data model!!!
 //once this has been run the data is in the expected form - 
 //fingers crossed
+
+//OUR CDSS is agnostic to the EHR patient model
+//THIS FUNCTION IS WHERE THE EHR Patient information model is fit to the model used by our CDSS
+//HERE IS WHERE WE SPECIFIY THAT local custom changes will be needed
 
 
 
 };
-if(runcheck(oberservationResultsArray).criteria == 1) {
+if(runCheck(oberservationResultsArray).criteria == 1) {
 	
 	if (object.role == "nurse") {
 	 sirsResponse(object,"nurse");

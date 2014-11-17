@@ -219,8 +219,8 @@ function testSIRS(obss) {
 
 var patients = [riskObsResults, nonriskObsResults, lowriskObsResults, medriskObsResults, med2riskObsResults];
 for (var i = 0, pat; pat = patients[i++];) {
-    console.log("assessing patient #"+i);
-    testSIRS(pat);
+   // console.log("assessing patient #"+i);
+   // testSIRS(pat);
 }
 
 //console.log(checkRule("37",sirsCriteria["assessments"]["assessments"][0]["rules"][0]))

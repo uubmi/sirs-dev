@@ -31,6 +31,7 @@ var missingObsResultsTest = new Array( // sirs risk
 );
 
 runCheck(missingObsResultsTest);
+console.log(missingObsResultsTest);
 
 function runCheck (oberservationResultsArray) {
 	//will receive pre-transformed patient data
@@ -127,7 +128,7 @@ console.log("  !! new observation!! "+oberservationResultsArray[j-1]["observatio
 } //runCheck
 
 
-	function checkForMissing( patientData) {
+function checkForMissing( patientData) {
 		//rule encoded for checking for existence of values for each SIRS criteria
 		//existence is here operationally defined as present with SNOMED-CT code and a value
 		var missingSirsCriteria = {assessmentPlan :
@@ -162,7 +163,7 @@ console.log("  !! new observation!! "+oberservationResultsArray[j-1]["observatio
 		
 		return assessMissing(patientData, missingSirsCriteria["assessmentPlan"], 0 );
 		//will send {nMetCriteria: ?, metObs: metObsResults}
-	}
+}
 
 
 function assessMissing(obsResults, assessmentPlan, level) {

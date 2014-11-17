@@ -43,18 +43,24 @@
 		{'id':'401','name':'Issac A Lot','gender':'male','temperature':'40'
 			,'heartRate':'120'
 			,'respiratoryRate':'24'
-			,'whiteBloodCellCount':'15'}, //'SIRScriteria':1 SIRS met!
+			,'PaCO2':'23'
+			,'whiteBloodCellCount':'15'
+			,'bandNeutrophilCount':'0.05'}, //'SIRScriteria':1 SIRS met!
 		{'id':'504','name':'Ima Eel Thee','gender':'female','temperature':'37'
 			,'heartRate':'70'
 			,'respiratoryRate':'15'
-			,'whiteBloodCellCount':'8'}, //'SIRScriteria':0 SIRS not met, no missing values
+			,'PaCO2':'23'
+			,'whiteBloodCellCount':'8'
+			,'bandNeutrophilCount':'0.05'}, //'SIRScriteria':0 SIRS not met, no missing values	
 		{'id':'default','name':'New Patient','gender':'default','temperature':'default'
 			,'heartRate':'default'
 			,'respiratoryRate':'default'
-			,'whiteBloodCellCount':'default'} //'SIRScriteria':-1 missing values  
+			,'PaCO2':'default'
+			,'whiteBloodCellCount':'default'
+			,'bandNeutrophilCount':'default'} //'SIRScriteria':-1 missing values  
 	]; 
 	
-	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse'},'101':{'name':'Jill','role':'Doctor'}};
+	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patinets':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patinets':{'id':'401','id':'504'}}};
 	var currentPatient;
 	var currentClinician;
 	//create drop down based on patientObjects
@@ -73,20 +79,57 @@
 	  console.log(userID);
 	  //create dropdown for patient selection
 		d3.select("#selectPatients")
+			.on("change", function() {
+					var patientName = this.value;
+				//	alert(patientName);
+					populateEHRdata(patientName);
+				//	var viewing = this.value;
+				//	window.location = [location.href, "?viewing=", viewing].join('');
+				})
 			.selectAll("option")
-			.data(patientObjectsArray,function(d){return d.name})
+			.data(patientObjectsArray)//,function(d){return d.id})
 			.enter()
 			.append("option")
 			//Provide available text for the dropdown options
-			.attr("value",function(d) {return d.key;})
+			//.attr("value",function(d) {return d.key;})
 			.text(function(d) {return d.name;});
+	
+	  //default values into EHR form input fields
+		populateEHRdata(patientObjectsArray[0].name);
 	
 	  //create greeting of Clinician
 		el3 = document.getElementById('greetClinician'); 
-		el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;
+		if(el3.style.display == 'none'){ el3.style.display = ''; el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;}
+		else { el3.style.display = 'none'; } 
 		
 		return false; 
 	}
+	
+	//changes values on EHR form input fields
+	function populateEHRdata(patient) {
+		console.log("meep "+patient+"");
+		patientObjectsArray.forEach(function(d) {
+			if(d.name == patient ) {
+				document.forms["patientData"].reset();
+				console.log("hits "+d.name+" "+d.temperature+" ");
+				d3.select("#temperature").attr("value",+d.temperature);
+					.on("change",function (){updateValue(d.name,"temperature");});
+				d3.select("#heartRate").attr("value",+d.heartRate);
+				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate);
+				d3.select("#PaCO2").attr("value",+d.PaCO2);
+				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount);
+				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount);
+				return true;
+			}
+		});
+	}
+	//function updateValue(patient,field) {
+	//	patientObjectsArray.forEach(function(d) {
+	//		if(d.name == patient ) {
+	//			//d.field = 0;
+	//		}
+	//	}
+	//}
   </script>
 </head>
 <body >
@@ -111,17 +154,9 @@
 			Please select a patient 
 			<select id="selectPatients" >
 			</select>
-			<!--script language='javascript'> //here is what happens when a patient is selected - the id is added to the URL
-				d3.select('#selectPatients').on("change", function() {
-					var key = this.value;
-					alert(key);
-					var viewing = this.value;
-					window.location = [location.href, "?viewing=", viewing].join('');
-				});	
-			</script-->
 		</div>
 		
-		<div id="patientData">
+		<div id="patientData" name="patientData" >
 			<!--responds to drop down in select patient
 			Name
 			ID
@@ -133,7 +168,9 @@
 				<span class="choices">temperature<input type="number" id="temperature"> </span></br>
 				<span class="choices">heart rate<input type="number" id="heartRate"> </span></br>
 				<span class="choices">respiratory rate<input type="number" id="respiratoryRate"> </span></br>
+				<span class="choices">PaCO2<input type="number" id="PaCO2"> </span></br>
 				<span class="choices">white blood cell count<input type="number" id="whiteBloodCellCount"></span></br>
+				<span class="choices">bandNeutrophilCount<input type="number" id="bandNeutrophilCount"> </span></br>
 			</form>	
 			<!--script language="javascript">  
 				var currentPatientName = url('?viewing');
