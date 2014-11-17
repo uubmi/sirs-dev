@@ -66,6 +66,7 @@
 	//create drop down based on patientObjects
 	//function dropDownMaker () {}
 	function authentication(userID) { 
+		
 		el = document.getElementById('authenticatonDiv'); 
 		if(el.style.display == 'none'){ el.style.display = ''; }
 		else { el.style.display = 'none'; } 
@@ -99,9 +100,17 @@
 	
 	  //create greeting of Clinician
 		el3 = document.getElementById('greetClinician'); 
-		if(el3.style.display == 'none'){ el3.style.display = ''; el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;}
+		if(el3.style.display == 'none'){ 
+			el3.style.display = ''; 
+			if (typeof currentClinician !== 'undefined') {
+				el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;
+			}
+			else {
+				el3.innerHTML = "View only";
+			}
+		}
 		else { el3.style.display = 'none'; } 
-		
+		//if( typeof currentClinician !== 'undefined' ) {el3.innerHTML = "Wellcome to the Clinic "+currentClinician.role+" "+currentClinician.name;}
 		return false; 
 	}
 	
@@ -113,7 +122,7 @@
 				document.forms["patientData"].reset();
 				console.log("hits "+d.name+" "+d.temperature+" ");
 				d3.select("#temperature").attr("value",+d.temperature);
-					.on("change",function (){updateValue(d.name,"temperature");});
+					//.on("change",function (){updateValue(d.name,"temperature");});
 				d3.select("#heartRate").attr("value",+d.heartRate);
 				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate);
 				d3.select("#PaCO2").attr("value",+d.PaCO2);
@@ -145,7 +154,7 @@
 			</form>
 		</div>
 
-		<div id="greetClinician">
+		<div id="greetClinician" style="display:none;">
 		</div>
 		
 		<div id="selectPatientDiv" style="display:none;">
