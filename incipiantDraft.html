@@ -42,14 +42,16 @@
   <script src="localTerminologyServer.js" charset="utf-8"></script>
   
   <script>
+	var startTime = new Date(); //;get current time. //20110305110000 yearmonthdayhour
+	
 	// this is the EMR data and patient models - simplified but different than the SIRS CDSS to demonstrate ability to accommodate any model
 	var patientObjectsArray = [ 
-		{'id':'401','name':'Issac A Lot','gender':'male','temperature':'40'
-			,'heartRate':'120'
-			,'respiratoryRate':'24'
-			,'PaCO2':'23'
-			//,'whiteBloodCellCount':'15'
-			,'bandNeutrophilCount':'0.05'}, //'SIRScriteria':1 SIRS met!
+		{'id':'401','name':'Issac A Lot','gender':'male','temperature':{'value':'40','evenTTime':new Date()}
+			,'heartRate':{'value':'120','evenTTime':new Date()}
+			,'respiratoryRate':{'value':'24','evenTTime':new Date()}
+			,'PaCO2':{'value':'23','evenTTime':new Date()}
+			,'whiteBloodCellCount':{'value':'15','evenTTime':new Date()}
+			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':1 SIRS met!
 		{'id':'504','name':'Ima Eel Thee','gender':'female','temperature':'37'
 			,'heartRate':'70'
 			,'respiratoryRate':'15'
@@ -158,14 +160,14 @@
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				
-				console.log("hits "+d.name+" "+d.temperature+" ");
-				d3.select("#temperature").attr("value",+d.temperature).style("color","black");
+				console.log("hits "+d.name+" "+d.temperature.value+" ");
+				d3.select("#temperature").attr("value",+d.temperature.value).style("color","black");
 					//.on("change",function (){updateValue(d.name,"temperature");});
-				d3.select("#heartRate").attr("value",+d.heartRate).style("color","black");
-				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate).style("color","black");
-				d3.select("#PaCO2").attr("value",+d.PaCO2).style("color","black");
-				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount).style("color","black");
-				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount).style("color","black");
+				d3.select("#heartRate").attr("value",+d.heartRate.value).style("color","black");
+				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate.value).style("color","black");
+				d3.select("#PaCO2").attr("value",+d.PaCO2.value).style("color","black");
+				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount.value).style("color","black");
+				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount.value).style("color","black");
 				
 				checkSIRSvalues({"patientData":d,"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
 				//will append result to patient record

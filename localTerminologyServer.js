@@ -1,6 +1,5 @@
 //localTerminologyServer.js
 //made to support our very small vocabulary
-//matches EHR data to SNOMED codes
 
 //Required:
 //matches SNOMED-CT codes to EHR data variable names
@@ -16,3 +15,8 @@ function SNOMEDtoLocalVariableSIRS (snomedCode){
 	return snomedLocalMap[snomedCode];
 }
 //required
+
+//matches EHR data to SNOMED codes
+function LocalVariabletoSNOMEDSIRS (localVariableName){
+	return false;
+}

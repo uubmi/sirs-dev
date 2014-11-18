@@ -67,17 +67,22 @@ console.log("making "+dataElement+"");
 		}
 		return dataElement; //if not changed
 		
-	}	
+	}
+
+	function convertLocalEMReventTime (dataElement) {
+	console.log(dataElement);
+		return dataElement.getFullYear()+""+(dataElement.getMonth()+1)+""+dataElement.getDate()+""+dataElement.getHours()+""+dataElement.getMinutes()+""+dataElement.getSeconds();
+	}
 	
 //Required:
 //values inserted into pre-configured compliant structure
 			var sirsObservations = new Array ( 
-				new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal",convertLocalEMRnonNumeric(patientData.temperature),"20110305110000"),
-				new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal",convertLocalEMRnonNumeric(patientData.heartRate),"20110305110000"),
-				new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal",convertLocalEMRnonNumeric(patientData.respiratoryRate),"20110305110000"),
-				new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal",convertLocalEMRnonNumeric(patientData.PaCO2),"20110305110000"),
-				new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal",convertLocalEMRnonNumeric(patientData.whiteBloodCellCount),"20110305110000"),
-				new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal",convertLocalEMRnonNumeric(patientData.bandNeutrophilCount),"20110305110000")
+				new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal",convertLocalEMRnonNumeric(patientData.temperature.value),convertLocalEMReventTime(patientData.temperature.evenTTime)),
+				new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal",convertLocalEMRnonNumeric(patientData.heartRate.value),convertLocalEMReventTime(patientData.heartRate.evenTTime)),
+				new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal",convertLocalEMRnonNumeric(patientData.respiratoryRate.value),convertLocalEMReventTime(patientData.respiratoryRate.evenTTime)),
+				new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal",convertLocalEMRnonNumeric(patientData.PaCO2.value),convertLocalEMReventTime(patientData.PaCO2.evenTTime)),
+				new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal",convertLocalEMRnonNumeric(patientData.whiteBloodCellCount.value),convertLocalEMReventTime(patientData.whiteBloodCellCount.evenTTime)),
+				new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal",convertLocalEMRnonNumeric(patientData.bandNeutrophilCount.value),convertLocalEMReventTime(patientData.bandNeutrophilCount.evenTTime))
 			);
 //end Required		
 
