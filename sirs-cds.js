@@ -106,7 +106,7 @@ var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
     {minRequirement: 1, 
      rules : new Array (    
         new Rule("2.16.840.1.113883.6.5", "86290005", "gt", "decimal", 20),  // Respiratory rate > 20 (breaths/min)   {codeSystem : "2.16.840.1.113883.6.5", code : "86290005", comparison: "gt", valueType: "decimal", value: 20}
-        new Rule("2.16.840.1.113883.6.5", "386725007", "lt", "decimal", 32)  // PaCO2 < 32(mmHg)             {codeSystem : "2.16.840.1.113883.6.5", code : "386725007", comparison: "lt", valueType: "decimal", value: 32}
+        new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "decimal", 32)  // PaCO2 < 32(mmHg)             {codeSystem : "2.16.840.1.113883.6.5", code : "386725007", comparison: "lt", valueType: "decimal", value: 32}
      )
     },
     {minRequirement: 1, 
