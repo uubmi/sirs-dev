@@ -71,7 +71,7 @@ function transformPatientData (patientData) {
 		
 	}
 //example for Event Time
-//this is also used for the Timer functions: timerUpdateValues
+//this is also used for the Timer functions: see checkCriteriaTimer
 	function convertLocalEMReventTime (dataElement) {
 //console.log(dataElement);
 		if(dataElement != 0) {//send the data as a vMR compliant string
@@ -173,8 +173,48 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 //check timestamp on observations against current time
 //function dataFreshness( oberservationResultsArray, updateInterval) {
 //check timestamps for entry with current time to see if updateInterval
-function timerUpdateValues (){
+function checkCriteriaTimer() {
+	
+function updateTimer(transformedPatientDataArray){
 var currentTime = convertLocalEMReventTime(new Date);
+
+function checkForMissing( patientData) {
+		//rule encoded for checking for existence of values for each SIRS criteria
+		//existence is here operationally defined as present with SNOMED-CT code and a value
+		var missingSirsCriteria = {assessmentPlan :
+			{minRequirement: 1, 
+				rules : new Array (
+				{minRequirement: 1, 
+					rules : new Array (    
+					new Rule("2.16.840.1.113883.6.5", "386725007", "doesNotExist", "decimal", 0) // Body temperature must exist
+					)
+				},
+				{minRequirement: 1, 
+					rules : new Array (    
+					new Rule("2.16.840.1.113883.6.5", "364075005", "doesNotExist", "decimal", 0) // Heart rate must exist
+					)
+				},
+				{minRequirement: 1, 
+					rules : new Array (    
+					new Rule("2.16.840.1.113883.6.5", "86290005", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
+					new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
+					)
+				},
+				{minRequirement: 1, 
+					rules : new Array (   
+						new Rule("2.16.840.1.113883.6.5", "365630000", "doesNotExist", "decimal", 0),  // Whole white blood cell count must exist 
+						new Rule("2.16.840.1.113883.6.5", "442113000", "doesNotExist", "decimal", 0)  // Immature neutrophil count must exist
+					)
+				}
+				)
+			},
+			actions : "missing SIRS criteria"
+		};  	
+		return assessMissing(patientData, missingSirsCriteria["assessmentPlan"], 0 );
+		//will send {nMetCriteria: ?, metObs: metObsResults}
+}
+
+
 //then iterate through and check 
 var dataNeedingUpdate = function () { 
 	var resultText = "";
@@ -185,5 +225,6 @@ var dataNeedingUpdate = function () {
 //return dataNeedingUpdate; 
 //}
 // !! add timer Independent of data entry!!	
+}
 }
 
