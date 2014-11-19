@@ -21,7 +21,6 @@ var ObservationResult = function(code, codeSystem, codeSystemName, displayName, 
 }
 
 //THIS file contains those things which we specify but need to be modified for each EHR
-
 function checkSIRSvalues (EMRobject) {
 //EMR object contains {"patientData":d,"clinician":currentClinician}
 //The specification is loose here as the exact nature of the incoming object is not known
@@ -29,7 +28,10 @@ function checkSIRSvalues (EMRobject) {
 	console.log(EMRobject.patientData);
 	console.log(EMRobject.clinician); //clinician role is expected
 
-var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ;
+//transformedPatientDataArray is the variable that contains the EMR patient data structured according to our minimal SIRS CDSS information model	
+var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ; 
+
+//critical function! to convert from local EMR patient information model to the SIRS EMR independent CDSS information model
 function transformPatientData (patientData) {
 //transform the data for sending vMR-esq compliant message to knowledge execution engine NEED to MOVE TO CDS
 //this Function is critical and the output is the message we specify
@@ -55,7 +57,7 @@ function transformPatientData (patientData) {
 	//var bandNeutrophilCount = EMRobject.patientData.bandNeutrophilCount;
 	
 	function convertLocalEMRnonNumeric(dataElement) {
-console.log("making "+dataElement+"");
+//console.log("making "+dataElement+"");
 		if (dataElement == 'default'){
 			return ""; //change!
 		} 
@@ -68,10 +70,20 @@ console.log("making "+dataElement+"");
 		return dataElement; //if not changed
 		
 	}
-
+//example for Event Time
+//this is also used for the Timer functions: timerUpdateValues
 	function convertLocalEMReventTime (dataElement) {
-	console.log(dataElement);
-		return dataElement.getFullYear()+""+(dataElement.getMonth()+1)+""+dataElement.getDate()+""+dataElement.getHours()+""+dataElement.getMinutes()+""+dataElement.getSeconds();
+//console.log(dataElement);
+		if(dataElement != 0) {//send the data as a vMR compliant string
+			return dataElement.getFullYear()+""+(dataElement.getMonth()+1)+""+dataElement.getDate()+""+dataElement.getHours()+""+dataElement.getMinutes()+""+dataElement.getSeconds();
+		} 
+		if (typeof dataElement == 'undefined' || isNaN(dataElement)) { //If your local EMR model does not have one of the Criteria but you wish to still use this CDSS, then alter the code here
+			console.log("EMR DOES NOT CONTAIN TIME ELEMENT");
+			//alert("ERROR! CONTACT SUPPORT! EMR DOES NOT CONTAIN TIME ELEMENT");
+			//consider emailing Local CDSS maintenance team!
+			return "ERROR";
+		}
+		return 0; //if time is zero then no time has been assigned
 	}
 	
 //Required:
@@ -126,7 +138,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	
 }
 
-if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
+  if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
 	console.log("missing data");
 	if (EMRobject.clinician.role == "Nurse") {
 	//sirsResponse(object,"nurse");
@@ -151,8 +163,8 @@ if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
 	 }
 	}
 	
-}
-
+  }
+}//checkSIRSvalues
 
 //TIMING IS SOMETHING THAT IS LOCALLY CONTROLLED 
 //NOT IN THE KNOWLEDGE BASE FOR SIRS CRITERIA
@@ -161,6 +173,9 @@ if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
 //check timestamp on observations against current time
 //function dataFreshness( oberservationResultsArray, updateInterval) {
 //check timestamps for entry with current time to see if updateInterval
+function timerUpdateValues (){
+var currentTime = convertLocalEMReventTime(new Date);
+//then iterate through and check 
 var dataNeedingUpdate = function () { 
 	var resultText = "";
 	//for oberservationResultsArray {
