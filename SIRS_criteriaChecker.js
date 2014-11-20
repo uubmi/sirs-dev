@@ -25,11 +25,75 @@ function checkSIRSvalues (EMRobject) {
 //EMR object contains {"patientData":d,"clinician":currentClinician}
 //The specification is loose here as the exact nature of the incoming object is not known
 //Must be tailored to local EMR
-	console.log(EMRobject.patientData);
-	console.log(EMRobject.clinician); //clinician role is expected
+	//console.log(EMRobject.patientData);
+	//console.log(EMRobject.clinician); //clinician role is expected
 
 //transformedPatientDataArray is the variable that contains the EMR patient data structured according to our minimal SIRS CDSS information model	
 var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ; 
+
+///////FROM HERE ON THE MODEL OF PATIENT AS A SET OF vMR Observations is set///////
+//console.log(runCheck(transformedPatientDataArray));
+//console.log("did we change EMR?");console.log(EMRobject.patientData);
+var sirsResults = new Array( );
+
+sirsResults = runCheck(transformedPatientDataArray);
+//console.log("results");
+//console.log(sirsResults);
+if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
+	console.log("sirs met");
+	
+	//SNOMEDtoLocalVariableSIRS(observationFocus.code)
+	//gives which EMR variable to indicate
+	
+	if (EMRobject.clinician.role == "Nurse") {
+	//sirsResponse(object,"nurse");
+	 //object updated with response package
+	 //actions to be taken are locally determined
+	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
+		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
+	 }
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").text("SIRS Criteria Met"); 
+	}
+	
+	if (EMRobject.clinician.role == "Doctor") {
+		//sirsResponse(object,"physician");
+	 //object updated with response package
+	 //actions to be taken are locally determined
+	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
+		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","orange");
+	 }
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").append("h1").text("SIRS Criteria Met"); 
+	}
+	
+}
+
+  if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
+	console.log("missing data");
+	if (EMRobject.clinician.role == "Nurse") {
+	//sirsResponse(object,"nurse");
+	 //object updated with response package
+	 //actions to be taken are locally determined
+	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
+		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
+		//console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
+		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","blue").text(" ?Missing?");
+	 }
+	 
+	}
+	
+	if (EMRobject.clinician.role == "Doctor") {
+	//	sirsResponse(object,"physician");
+	 //object updated with response package
+	 //actions to be taken are locally determined
+	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
+		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
+		//console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
+		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","green").text(" ?Missing?");
+	 }
+	}
+	
+  }
+}//checkSIRSvalues
 
 //critical function! to convert from local EMR patient information model to the SIRS EMR independent CDSS information model
 function transformPatientData (patientData) {
@@ -99,72 +163,11 @@ function transformPatientData (patientData) {
 //end Required		
 
 	return sirsObservations;
-};
+};//transformPatientData function
 
-console.log("sending");console.log(transformedPatientDataArray);
-//////FROM HERE ON THE MODEL OF PATIENT AS A SET OF vMR Observations is set///////
-console.log(runCheck(transformedPatientDataArray));
-//console.log("did we change EMR?");console.log(EMRobject.patientData);
-var sirsResults = new Array( );
 
-sirsResults = runCheck(transformedPatientDataArray);
-console.log("results");
-console.log(sirsResults);
-if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
-	console.log("sirs met");
-	
-	//SNOMEDtoLocalVariableSIRS(observationFocus.code)
-	//gives which EMR variable to indicate
-	
-	if (EMRobject.clinician.role == "Nurse") {
-	//sirsResponse(object,"nurse");
-	 //object updated with response package
-	 //actions to be taken are locally determined
-	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
-		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
-	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").text("SIRS Criteria Met"); 
-	}
-	
-	if (EMRobject.clinician.role == "Doctor") {
-		//sirsResponse(object,"physician");
-	 //object updated with response package
-	 //actions to be taken are locally determined
-	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
-		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","orange");
-	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").append("h1").text("SIRS Criteria Met"); 
-	}
-	
-}
 
-  if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
-	console.log("missing data");
-	if (EMRobject.clinician.role == "Nurse") {
-	//sirsResponse(object,"nurse");
-	 //object updated with response package
-	 //actions to be taken are locally determined
-	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
-		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
-		console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
-		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","blue").text(" ?Missing?");
-	 }
-	 
-	}
-	
-	if (EMRobject.clinician.role == "Doctor") {
-	//	sirsResponse(object,"physician");
-	 //object updated with response package
-	 //actions to be taken are locally determined
-	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
-		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
-		console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
-		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","green").text(" ?Missing?");
-	 }
-	}
-	
-  }
-}//checkSIRSvalues
+checkCriteriaTimer();
 
 //TIMING IS SOMETHING THAT IS LOCALLY CONTROLLED 
 //NOT IN THE KNOWLEDGE BASE FOR SIRS CRITERIA
@@ -173,58 +176,163 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 //check timestamp on observations against current time
 //function dataFreshness( oberservationResultsArray, updateInterval) {
 //check timestamps for entry with current time to see if updateInterval
-function checkCriteriaTimer() {
-	
-function updateTimer(transformedPatientDataArray){
-var currentTime = convertLocalEMReventTime(new Date);
-
-function checkForMissing( patientData) {
-		//rule encoded for checking for existence of values for each SIRS criteria
-		//existence is here operationally defined as present with SNOMED-CT code and a value
-		var missingSirsCriteria = {assessmentPlan :
+function checkCriteriaTimer(pateints) {
+	//foreach patinet from pateints 
+	//if(updateTimer(patient)) then problem!
+	//updateTimer(patientObjectsArray[0]);
+	function updateTimer(patientdata){
+		var currentTime = convertLocalEMReventTime(new Date);
+		var transformedPatientDataArray = transformPatientData(patientdata);
+		var resultUpdateCheck = updateChecker(transformedPatientDataArray);
+		
+		console.log(resultUpdateCheck);
+		
+	  function updateChecker(patientData) {
+		//rule encoded for checking that the interval between checks has not passed
+		var adultIntervalToTest = 10; //this is encoded according to the TimeCode Standard in use 
+			//20110305110000
+			//thus 2 hours would be 20000
+			//yearMtDaHrMnSc
+		var timingSirsCriteria = {assessmentPlan :
 			{minRequirement: 1, 
 				rules : new Array (
 				{minRequirement: 1, 
-					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "386725007", "doesNotExist", "decimal", 0) // Body temperature must exist
-					)
-				},
-				{minRequirement: 1, 
-					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "364075005", "doesNotExist", "decimal", 0) // Heart rate must exist
-					)
-				},
-				{minRequirement: 1, 
-					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "86290005", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
-					new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
-					)
-				},
-				{minRequirement: 1, 
-					rules : new Array (   
-						new Rule("2.16.840.1.113883.6.5", "365630000", "doesNotExist", "decimal", 0),  // Whole white blood cell count must exist 
-						new Rule("2.16.840.1.113883.6.5", "442113000", "doesNotExist", "decimal", 0)  // Immature neutrophil count must exist
+					rules : new Array (    //RULES FOR ADULT PATIENTS -- PEDIATRIC AND NEONATES???
+					new Rule("2.16.840.1.113883.6.5", "386725007", "lt", "integer", currentTime - adultIntervalToTest), // Body temperature must have entered no more than 2 hours ago
+					new Rule("2.16.840.1.113883.6.5", "364075005", "lt", "integer", currentTime - adultIntervalToTest), // Heart rate must have entered no more than 2 hours ago 
+					new Rule("2.16.840.1.113883.6.5", "86290005", "lt", "integer", currentTime - adultIntervalToTest),  // Respiratory rate must have entered no more than 2 hours ago
+					new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "integer", currentTime - adultIntervalToTest),  // PaCO2 < 32(mmHg) must have entered no more than 2 hours ago
+					new Rule("2.16.840.1.113883.6.5", "365630000", "lt", "integer", currentTime - adultIntervalToTest),  // Whole white blood cell count must have entered no more than 2 hours ago 
+					new Rule("2.16.840.1.113883.6.5", "442113000", "lt", "integer", currentTime - adultIntervalToTest)  // Immature neutrophil count must have entered no more than 2 hours ago
 					)
 				}
+				//,
+				//{minRequirement: 1, 
+				//	rules : new Array (    
+				//	new Rule("2.16.840.1.113883.6.5", "364075005", "doesNotExist", "decimal", 0) // Heart rate must exist
+				//	)
+				//},
+				//{minRequirement: 1, 
+				//	rules : new Array (    
+				//	new Rule("2.16.840.1.113883.6.5", "86290005", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
+				//	new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
+				//	)
+				//},
+				//{minRequirement: 1, 
+				//	rules : new Array (   
+				//		new Rule("2.16.840.1.113883.6.5", "365630000", "doesNotExist", "decimal", 0),  // Whole white blood cell count must exist 
+				//		new Rule("2.16.840.1.113883.6.5", "442113000", "doesNotExist", "decimal", 0)  // Immature neutrophil count must exist
+				//	)
+				//}
 				)
 			},
-			actions : "missing SIRS criteria"
+			actions : "checking Timing of SIRS criteria"
 		};  	
-		return assessMissing(patientData, missingSirsCriteria["assessmentPlan"], 0 );
+		return assessTimingRules(patientData, timingSirsCriteria["assessmentPlan"], 0 );
 		//will send {nMetCriteria: ?, metObs: metObsResults}
-}
+	  }//updateChecker()
 
+		function assessTimingRules(obsResults, assessmentPlan, level) { //execution engine!!!!!
+			var criteriaMet = 0;
+			var rules = assessmentPlan["rules"];
+			var metObsResults = [];
+			var assessedResults;
+			for(var i = 0, rule; rule = rules[i++];) {
+				if ('undefined' !== typeof (rules[0].comparison) ) {  
+					for (var k = 0, obs; obs = obsResults[k++];) {
+						if (checkTime(obs, rule)) {
+		//                    console.log(" criteria met "+rule["code"]+" "+rule["comparison"]+" "+rule["value"]+"("+obs["observationValue"]["value"]+")");
+							criteriaMet++;
+							metObsResults.push(obs);
+						}    
+					}
+				} else {
+					assessedResults = assessTimingRules(obsResults, rule, level+1);
+					criteriaMet += assessedResults.nMetCriteria;
+					for (var mi = 0, badRes; badRes = assessedResults["metObs"][mi++];) {
+						metObsResults.push(badRes);
+					}    
+				}        
+			}
+			if (criteriaMet >= assessmentPlan["minRequirement"]) {
+		//        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+				return { 
+					nMetCriteria: 1,
+					metObs: metObsResults
+				};
+			} else {
+		//        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+				return { 
+					nMetCriteria: 0,
+					metObs: metObsResults
+				};
+			}
+		}
+		
+		function checkTime(obsResult, rule) {
+	//contains ability to use a large number of comparisons in addition to missing to allow for customization/flexibility 
+	//for cases where a criteria is only needed when another one is missing!
+		var returnResult = false; //default is the the rule has not been met
+		if (obsResult["observationFocus"]["code"] != rule["code"] 
+			|| obsResult["observationFocus"]["codeSystem"] != rule["codeSystem"])
+				return returnResult;	
+		var value; // = obsResult["observationValue"]["value"];
+		switch (rule["valueType"]) {
+			case "decimal": value = parseFloat(obsResult["observationEventTime"]["observationEventTime"]);
+							break;
+			case "integer": value = parseInt(obsResult["observationEventTime"]["observationEventTime"]);
+							break;
+		}                    
+		switch (rule["comparison"]) {
+			case "gt": 
+				if(value > rule["value"])
+					returnResult = true;
+				break;
+			case "ge": 
+				if(value >= rule["value"])
+					returnResult = true;
+				break;
+			case "lt": 
+				if(value < rule["value"])
+					returnResult = true;
+				break;
+			case "le": 
+				if(value <= rule["value"])
+					returnResult = true;
+				break;
+			case "eq": 
+				if(value == rule["value"])
+					returnResult = true;
+				break;
+			case "ne": 
+				if(value != rule["value"])
+					returnResult = true;
+				break;
+			case "doesNotExist":
+				if(typeof value == 'undefined' || isNaN(value) ){
+					returnResult = true;
+					break;
+				}
+				if(obsResult["observationValue"]["value"].length == 0) {
+					returnResult = true;
+					break;
+				}
+			break;
+		}    
+		return returnResult;
+	}	  
 
+	}
 //then iterate through and check 
-var dataNeedingUpdate = function () { 
+	var dataNeedingUpdate = function () { 
 	var resultText = "";
 	//for oberservationResultsArray {
 	//};
 	return resultText;
-};
+	};
 //return dataNeedingUpdate; 
 //}
 // !! add timer Independent of data entry!!	
 }
-}
+
 

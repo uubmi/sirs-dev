@@ -170,7 +170,7 @@
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				
-				console.log("hits "+d.name+" "+d.temperature.value+" ");
+				//console.log("hits "+d.name+" "+d.temperature.value+" ");
 				d3.select("#temperature").attr("value",+d.temperature.value).style("color","black");
 					//.on("change",function (){updateValue(d.name,"temperature");});
 				d3.select("#heartRate").attr("value",+d.heartRate.value).style("color","black");
@@ -198,7 +198,7 @@
 		var datumToChange = field.id;
 		var newValue = field.value;
 		var newEvenTTime = new Date();
-	console.log("TRY iT "+field.id+" "+field.value+" "+patientNameSelected);
+	//console.log("TRY iT "+field.id+" "+field.value+" "+patientNameSelected);
 	   
 		//update value and Event Time!
 		//run sirs_critieriaCHecker and also does some house-keeping 
@@ -208,12 +208,12 @@
 			  //update field for patient
 				//console.log("vale"+newValue+" "+datumToChange);
 				patientObjectsArray[i][datumToChange].value = newValue;
-				console.log("secods "+newEvenTTime.getTime());
+				//console.log("secods "+newEvenTTime.getTime());
 				//inefficient but records that a new date has been entered in
 				var milliseconds = newEvenTTime.getTime();
 				patientObjectsArray[i][datumToChange].evenTTime.setTime(newEvenTTime.getTime());
-				console.log("secods "+newEvenTTime.getTime());
-				console.log(patientObjectsArray[i][datumToChange].evenTTime.toLocaleTimeString() );
+				//console.log("secods "+newEvenTTime.getTime());
+				//console.log(patientObjectsArray[i][datumToChange].evenTTime.toLocaleTimeString() );
 				
 			  //house-keeping
 				document.forms["patientData"].reset();
@@ -222,7 +222,7 @@
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				
-				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
+				//console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
 				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
 					//.on("change",function (){updateValue(d.name,"temperature");});
 				d3.select("#heartRate").attr("value",+patientObjectsArray[i].heartRate.value).style("color","black");
