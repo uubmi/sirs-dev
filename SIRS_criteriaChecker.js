@@ -153,9 +153,9 @@ function transformPatientData (patientData) {
 //Required:
 //values inserted into pre-configured compliant structure
 			var sirsObservations = new Array ( 
-				new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal",convertLocalEMRnonNumeric(patientData.temperature.value),convertLocalEMReventTime(patientData.temperature.evenTTime)),
-				new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal",convertLocalEMRnonNumeric(patientData.heartRate.value),convertLocalEMReventTime(patientData.heartRate.evenTTime)),
-				new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal",convertLocalEMRnonNumeric(patientData.respiratoryRate.value),convertLocalEMReventTime(patientData.respiratoryRate.evenTTime)),
+				new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal",convertLocalEMRnonNumeric(patientData.temperature.value),convertLocalEMReventTime(patientData.temperature.evenTTime)),
+				new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal",convertLocalEMRnonNumeric(patientData.heartRate.value),convertLocalEMReventTime(patientData.heartRate.evenTTime)),
+				new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal",convertLocalEMRnonNumeric(patientData.respiratoryRate.value),convertLocalEMReventTime(patientData.respiratoryRate.evenTTime)),
 				new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal",convertLocalEMRnonNumeric(patientData.PaCO2.value),convertLocalEMReventTime(patientData.PaCO2.evenTTime)),
 				new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal",convertLocalEMRnonNumeric(patientData.whiteBloodCellCount.value),convertLocalEMReventTime(patientData.whiteBloodCellCount.evenTTime)),
 				new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal",convertLocalEMRnonNumeric(patientData.bandNeutrophilCount.value),convertLocalEMReventTime(patientData.bandNeutrophilCount.evenTTime))
@@ -198,9 +198,9 @@ function checkCriteriaTimer(pateints) {
 				rules : new Array (
 				{minRequirement: 1, 
 					rules : new Array (    //RULES FOR ADULT PATIENTS -- PEDIATRIC AND NEONATES???
-					new Rule("2.16.840.1.113883.6.5", "386725007", "lt", "integer", currentTime - adultIntervalToTest), // Body temperature must have entered no more than 2 hours ago
-					new Rule("2.16.840.1.113883.6.5", "364075005", "lt", "integer", currentTime - adultIntervalToTest), // Heart rate must have entered no more than 2 hours ago 
-					new Rule("2.16.840.1.113883.6.5", "86290005", "lt", "integer", currentTime - adultIntervalToTest),  // Respiratory rate must have entered no more than 2 hours ago
+					new Rule("2.16.840.1.113883.6.5", "105723007", "lt", "integer", currentTime - adultIntervalToTest), // Body temperature must have entered no more than 2 hours ago
+					new Rule("2.16.840.1.113883.6.5", "301113001", "lt", "integer", currentTime - adultIntervalToTest), // Heart rate must have entered no more than 2 hours ago 
+					new Rule("2.16.840.1.113883.6.5", "301283003", "lt", "integer", currentTime - adultIntervalToTest),  // Respiratory rate must have entered no more than 2 hours ago
 					new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "integer", currentTime - adultIntervalToTest),  // PaCO2 < 32(mmHg) must have entered no more than 2 hours ago
 					new Rule("2.16.840.1.113883.6.5", "365630000", "lt", "integer", currentTime - adultIntervalToTest),  // Whole white blood cell count must have entered no more than 2 hours ago 
 					new Rule("2.16.840.1.113883.6.5", "442113000", "lt", "integer", currentTime - adultIntervalToTest)  // Immature neutrophil count must have entered no more than 2 hours ago
@@ -209,12 +209,12 @@ function checkCriteriaTimer(pateints) {
 				//,
 				//{minRequirement: 1, 
 				//	rules : new Array (    
-				//	new Rule("2.16.840.1.113883.6.5", "364075005", "doesNotExist", "decimal", 0) // Heart rate must exist
+				//	new Rule("2.16.840.1.113883.6.5", "301113001", "doesNotExist", "decimal", 0) // Heart rate must exist
 				//	)
 				//},
 				//{minRequirement: 1, 
 				//	rules : new Array (    
-				//	new Rule("2.16.840.1.113883.6.5", "86290005", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
+				//	new Rule("2.16.840.1.113883.6.5", "301283003", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
 				//	new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
 				//	)
 				//},

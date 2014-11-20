@@ -5,9 +5,9 @@
 //matches SNOMED-CT codes to EHR data variable names
 function SNOMEDtoLocalVariableSIRS (snomedCode){
 	var snomedLocalMap = { 
-		"386725007":"temperature",
-		"364075005":"heartRate",
-		"86290005":"respiratoryRate",
+		"105723007":"temperature",
+		"301113001":"heartRate",
+		"301283003":"respiratoryRate",
 		"373677008":"PaCO2",
 		"365630000":"whiteBloodCellCount",
 		"442113000":"bandNeutrophilCount"

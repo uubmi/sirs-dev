@@ -1,5 +1,5 @@
 //
-var tempVmr = '<?xml version="1.0" encoding="UTF-8"?> <vmr:vmr xsi:schemaLocation="org.opencds.vmr.v1_0.schema.vmr vmr.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vmr="org.opencds.vmr.v1_0.schema.vmr"> <!-- ALL: 18 years old, female, EncDx (ICD9CM): pregnancy,sexual activity; procedures (CPT/HCPCS/UBREV): sexual activity, chlamydia tests, pregnancy Tests; Obs (LOINC): chlamydia tests, pregnancy Tests, sexual activity; SubstanceAdmin (NDC): contraceptives--> <templateId root="2.16.840.1.113883.3.1829.11.1.2.1"/> <patient> <templateId root="2.16.840.1.113883.3.1829.11.2.1.1"/> <id extension="CHL0001" root="2.16.840.1.113883.3.795.5.2.1.1"/> <demographics> </demographics> <clinicalStatements> <observationResults> <observationResult><!--Observation temperature test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="386725007" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Body temperature (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="38.5"/></observationValue> </observationResult> <observationResult><!--Observation heart rate test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="364075005" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Heart rate (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="91"/></observationValue> </observationResult> <observationResult><!--Observation respiratory rate test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="86290005" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Respiratory rate (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="21"/></observationValue> </observationResult> <observationResult><!--Observation PCO2 test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="373677008" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Finding of arterial partial pressure of carbon dioxide (finding)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="33"/></observationValue> </observationResult> <observationResult><!--Observation whole white blood cell count test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="365630000" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Finding of white blood cell number (finding)"/> <observationEventTime high="20110305120000" low="20110305120000"/> <observationValue><decimal value="12.1"/></observationValue> </observationResult> <observationResult><!--Observation immature neutrophil test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="442113000" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName=" Band neutrophil count above reference range (finding)"/> <observationEventTime high="20110305120000" low="20110305120000"/> <observationValue><decimal value="0.15"/></observationValue> </observationResult> </observationResults> </clinicalStatements> </patient></vmr:vmr>';
+var tempVmr = '<?xml version="1.0" encoding="UTF-8"?> <vmr:vmr xsi:schemaLocation="org.opencds.vmr.v1_0.schema.vmr vmr.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vmr="org.opencds.vmr.v1_0.schema.vmr"> <!-- ALL: 18 years old, female, EncDx (ICD9CM): pregnancy,sexual activity; procedures (CPT/HCPCS/UBREV): sexual activity, chlamydia tests, pregnancy Tests; Obs (LOINC): chlamydia tests, pregnancy Tests, sexual activity; SubstanceAdmin (NDC): contraceptives--> <templateId root="2.16.840.1.113883.3.1829.11.1.2.1"/> <patient> <templateId root="2.16.840.1.113883.3.1829.11.2.1.1"/> <id extension="CHL0001" root="2.16.840.1.113883.3.795.5.2.1.1"/> <demographics> </demographics> <clinicalStatements> <observationResults> <observationResult><!--Observation temperature test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="105723007" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Body temperature (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="38.5"/></observationValue> </observationResult> <observationResult><!--Observation heart rate test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="301113001" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Heart rate (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="91"/></observationValue> </observationResult> <observationResult><!--Observation respiratory rate test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="301283003" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Respiratory rate (observable entity)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="21"/></observationValue> </observationResult> <observationResult><!--Observation PCO2 test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="373677008" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Finding of arterial partial pressure of carbon dioxide (finding)"/> <observationEventTime high="20110305110000" low="20110305110000"/> <observationValue><decimal value="33"/></observationValue> </observationResult> <observationResult><!--Observation whole white blood cell count test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="365630000" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName="Finding of white blood cell number (finding)"/> <observationEventTime high="20110305120000" low="20110305120000"/> <observationValue><decimal value="12.1"/></observationValue> </observationResult> <observationResult><!--Observation immature neutrophil test--> <id extension="obr002" root="2.16.840.1.113883.3.795.5.2.3.6"/> <observationFocus code="442113000" codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED-CT" displayName=" Band neutrophil count above reference range (finding)"/> <observationEventTime high="20110305120000" low="20110305120000"/> <observationValue><decimal value="0.15"/></observationValue> </observationResult> </observationResults> </clinicalStatements> </patient></vmr:vmr>';
 
 
 /*
@@ -43,41 +43,41 @@ var ObservationResult = function(code, codeSystem, codeSystemName, displayName, 
     this.observationEventTime = new ObservationEventTime(time);
 }
 var riskObsResults = new Array( // sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","38.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","38.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","33","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","12.1","20110305110000"),
     new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.15","20110305110000")
 );
 var nonriskObsResults = new Array( // no sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
     new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
 );
 var lowriskObsResults = new Array( // sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
     new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
 );
 var medriskObsResults = new Array( // sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
     new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
 );
 var med2riskObsResults = new Array( // sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
     new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.15","20110305110000")
@@ -94,19 +94,19 @@ var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
  rules : new Array (
     {minRequirement: 1, 
      rules : new Array (    
-        new Rule("2.16.840.1.113883.6.5", "386725007", "gt", "decimal", 38), // Body temperature > 38(C)  {codeSystem : "2.16.840.1.113883.6.5", code : "386725007", comparison: "gt", valueType: "decimal", value: 38}
-        new Rule("2.16.840.1.113883.6.5", "386725007", "lt", "decimal", 36)  // Body temperature < 36(C)  {codeSystem : "2.16.840.1.113883.6.5", code : "386725007", comparison: "lt", valueType: "decimal", value: 36} 
+        new Rule("2.16.840.1.113883.6.5", "105723007", "gt", "decimal", 38), // Body temperature > 38(C)  {codeSystem : "2.16.840.1.113883.6.5", code : "105723007", comparison: "gt", valueType: "decimal", value: 38}
+        new Rule("2.16.840.1.113883.6.5", "105723007", "lt", "decimal", 36)  // Body temperature < 36(C)  {codeSystem : "2.16.840.1.113883.6.5", code : "105723007", comparison: "lt", valueType: "decimal", value: 36} 
      )
     },
     {minRequirement: 1, 
      rules : new Array (    
-        new Rule("2.16.840.1.113883.6.5", "364075005", "gt", "decimal", 90) // Heart rate > 90(beats/min)  {codeSystem : "2.16.840.1.113883.6.5", code : "364075005", comparison: "gt", valueType: "decimal", value: 90}
+        new Rule("2.16.840.1.113883.6.5", "301113001", "gt", "decimal", 90) // Heart rate > 90(beats/min)  {codeSystem : "2.16.840.1.113883.6.5", code : "301113001", comparison: "gt", valueType: "decimal", value: 90}
      )
     },
     {minRequirement: 1, 
      rules : new Array (    
-        new Rule("2.16.840.1.113883.6.5", "86290005", "gt", "decimal", 20),  // Respiratory rate > 20 (breaths/min)   {codeSystem : "2.16.840.1.113883.6.5", code : "86290005", comparison: "gt", valueType: "decimal", value: 20}
-        new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "decimal", 32)  // PaCO2 < 32(mmHg)             {codeSystem : "2.16.840.1.113883.6.5", code : "386725007", comparison: "lt", valueType: "decimal", value: 32}
+        new Rule("2.16.840.1.113883.6.5", "301283003", "gt", "decimal", 20),  // Respiratory rate > 20 (breaths/min)   {codeSystem : "2.16.840.1.113883.6.5", code : "301283003", comparison: "gt", valueType: "decimal", value: 20}
+        new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "decimal", 32)  // PaCO2 < 32(mmHg)             {codeSystem : "2.16.840.1.113883.6.5", code : "105723007", comparison: "lt", valueType: "decimal", value: 32}
      )
     },
     {minRequirement: 1, 
@@ -224,7 +224,7 @@ for (var i = 0, pat; pat = patients[i++];) {
 }
 
 //console.log(checkRule("37",sirsCriteria["assessments"]["assessments"][0]["rules"][0]))
-var tempRule = new Rule("2.16.840.1.113883.6.5",  "386725007",  "gt",  "decimal", 38);
+var tempRule = new Rule("2.16.840.1.113883.6.5",  "105723007",  "gt",  "decimal", 38);
 //tempRule = {codeSystem : "2.16.840.1.113883.6.5", code : "365630000", comparison: "gt", valueType: "decimal", value: 12};
 //console.log("assess rules for risk patient: "+assessRules(riskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
 //console.log("assess rules for non risk patient: "+assessRules(nonriskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
@@ -235,6 +235,6 @@ var tempRule = new Rule("2.16.840.1.113883.6.5",  "386725007",  "gt",  "decimal"
 console.log("test end");
 //console.log(tempRule)
 //console.log(tempRule instanceof Rule)
-//console.log(new Rule("2.16.840.1.113883.6.5",  "386725007",  "gt",  "decimal", 38))
+//console.log(new Rule("2.16.840.1.113883.6.5",  "105723007",  "gt",  "decimal", 38))
 //console.log(sirsCriteria["assessments"]["assessments"][0]["rules"] instanceof Array)
-//console.log(new Rule("2.16.840.1.113883.6.5",  "386725007",  "gt",  "decimal", 38) == sirsCriteria["assessments"]["assessments"][0]["rules"][0])
+//console.log(new Rule("2.16.840.1.113883.6.5",  "105723007",  "gt",  "decimal", 38) == sirsCriteria["assessments"]["assessments"][0]["rules"][0])

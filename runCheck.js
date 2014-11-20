@@ -39,9 +39,9 @@ function copyObservationResult(parentCopy){
 }
 
 var missingObsResultsTest = new Array( // sirs risk
-    new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","38.5","20110305110000"),
-    new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
-    new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
+    new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","38.5","20110305110000"),
+    new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","91","20110305110000"),
+    new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","21","20110305110000"),
     new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","33","20110305110000"),
     new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","12.1","20110305110000")
 	//,
@@ -88,9 +88,9 @@ function runCheck (oberservationResultsArray) {
 		var patientData_withDummyValues = addDummyData(oberservationResultsArray,missingData);
 		function addDummyData (oberservationResultsArray,missingData) {
 			var nonRiskValues = { // no sirs risk
-				"386725007":new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
-				"364075005":new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
-				"86290005":new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
+				"105723007":new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
+				"301113001":new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
+				"301283003":new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
 				"373677008":new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
 				"365630000":new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
 				"442113000":new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
@@ -140,17 +140,17 @@ function checkForMissing( patientData) {
 				rules : new Array (
 				{minRequirement: 1, 
 					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "386725007", "doesNotExist", "decimal", 0) // Body temperature must exist
+					new Rule("2.16.840.1.113883.6.5", "105723007", "doesNotExist", "decimal", 0) // Body temperature must exist
 					)
 				},
 				{minRequirement: 1, 
 					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "364075005", "doesNotExist", "decimal", 0) // Heart rate must exist
+					new Rule("2.16.840.1.113883.6.5", "301113001", "doesNotExist", "decimal", 0) // Heart rate must exist
 					)
 				},
 				{minRequirement: 1, 
 					rules : new Array (    
-					new Rule("2.16.840.1.113883.6.5", "86290005", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
+					new Rule("2.16.840.1.113883.6.5", "301283003", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
 					new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
 					)
 				},
@@ -197,9 +197,9 @@ function assessMissing(obsResults, assessmentPlan, level) {
 				//console.log("ouch! "+rule["code"]+" "+rule["comparison"]+"");
 				criteriaMet++; //counts as missingData
 				var blankValues = { // blank Values to substitute for completely not included data 
-				"386725007":new ObservationResult("386725007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","","20110305110000"),
-				"364075005":new ObservationResult("364075005","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","","20110305110000"),
-				"86290005":new ObservationResult("86290005","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","","20110305110000"),
+				"105723007":new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","","20110305110000"),
+				"301113001":new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","","20110305110000"),
+				"301283003":new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","","20110305110000"),
 				"373677008":new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","","20110305110000"),
 				"365630000":new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","","20110305110000"),
 				"442113000":new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","","20110305110000")
