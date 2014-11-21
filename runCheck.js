@@ -65,7 +65,7 @@ function runCheck (oberservationResultsArray) {
 		SIRScriteriaMessage = buildSIRScriteriaMessage(oberservationResultsArray);
 		function buildSIRScriteriaMessage (oberservationResultsArray){
 			//send SIRS Criteria observation message to relevant knowledge execution engine
-			var knowledgeExecutionEngineResult = assessRules(oberservationResultsArray, sirsCriteria["assessmentPlan"], 0 );
+			var knowledgeExecutionEngineResult = assessRules(oberservationResultsArray, sirsCriteria, 0 );
 			//will contain nMetCriteria:1 if SIRS criteria met and metObs with all the met observations
 
 			//for (var i = 0, obs; obs = knowledgeExecutionEngineResult.metObs[i++]; ) {
@@ -120,7 +120,7 @@ function runCheck (oberservationResultsArray) {
 		}
 		//run execution engine with dummy values for missing
 		//IMPORTANT NOT TO SUBISTUTE THE patientData_withDummyValues for Real patient data even if they are missing
-		var knowledgeExecutionEngineResult = assessRules(patientData_withDummyValues, sirsCriteria["assessmentPlan"], 0 );
+		var knowledgeExecutionEngineResult = assessRules(patientData_withDummyValues, sirsCriteria, 0 );
 		//will contain nMetCriteria:1 if SIRS criteria met and metObs with all the met observations
 		//WILL NEED TO REPORT if SIRS Criteria is met!
 		missingDataMessage = {

@@ -89,7 +89,7 @@ var Rule = function (codeSystem, code, comparison, valueType, value) {
     this.valueType = valueType;
     this.value = value;
 }
-var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
+var sirsCriteria =  //knowledge representation!!!!!
 {minRequirement: 2, 
  rules : new Array (
     {minRequirement: 1, 
@@ -98,11 +98,8 @@ var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
         new Rule("2.16.840.1.113883.6.5", "105723007", "lt", "decimal", 36)  // Body temperature < 36(C)  {codeSystem : "2.16.840.1.113883.6.5", code : "105723007", comparison: "lt", valueType: "decimal", value: 36} 
      )
     },
-    {minRequirement: 1, 
-     rules : new Array (    
         new Rule("2.16.840.1.113883.6.5", "301113001", "gt", "decimal", 90) // Heart rate > 90(beats/min)  {codeSystem : "2.16.840.1.113883.6.5", code : "301113001", comparison: "gt", valueType: "decimal", value: 90}
-     )
-    },
+     ,
     {minRequirement: 1, 
      rules : new Array (    
         new Rule("2.16.840.1.113883.6.5", "301283003", "gt", "decimal", 20),  // Respiratory rate > 20 (breaths/min)   {codeSystem : "2.16.840.1.113883.6.5", code : "301283003", comparison: "gt", valueType: "decimal", value: 20}
@@ -116,17 +113,18 @@ var sirsCriteria = {assessmentPlan : //knowledge representation!!!!!
         new Rule("2.16.840.1.113883.6.5", "442113000", "gt", "decimal", 0.1)  // Immature neutrophil count > 0.10(fraction)    {codeSystem : "2.16.840.1.113883.6.5", code : "442113000", comparison: "gt", valueType: "decimal", value: 0.1}
      )
     }
- )
-},
-actions : "sirs risk"
+ ),
+actionsWhenMet : [ "sirs risk", "Measure lactate level", "Order blood cultures"],
+actionsNotMet : ["not sirs risk"]
 };    
 function assessRules(obsResults, assessmentPlan, level) { //execution engine!!!!!
     var criteriaMet = 0;
     var rules = assessmentPlan["rules"];
     var metObsResults = [];
+    var actions = [];
     var assessedResults;
-    for(var i = 0, rule; rule = rules[i++];) {
-        if ('undefined' !== typeof (rules[0].comparison) ) {  
+    for(var i = 0, rule; rule = rules[i++];) {          //  each rule in a complex rules
+        if ('undefined' !== typeof (rule.comparison) ) {    // if rule is a simple rule
             for (var k = 0, obs; obs = obsResults[k++];) {
                 if (checkRule(obs, rule)) {
 //                    console.log(" criteria met "+rule["code"]+" "+rule["comparison"]+" "+rule["value"]+"("+obs["observationValue"]["value"]+")");
@@ -134,25 +132,40 @@ function assessRules(obsResults, assessmentPlan, level) { //execution engine!!!!
                     metObsResults.push(obs);
                 }    
             }
-        } else {
+        } else {                                            // rule is also complex rule
             assessedResults = assessRules(obsResults, rule, level+1);
             criteriaMet += assessedResults.nMetCriteria;
             for (var mi = 0, badRes; badRes = assessedResults["metObs"][mi++];) {
                 metObsResults.push(badRes);
             }    
+            for (var iAction = 0, action; action = assessedResults["actionsToTake"][iAction++]; ) {
+                actions.push(action);
+            }
         }        
     }
     if (criteriaMet >= assessmentPlan["minRequirement"]) {
 //        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+        if ('undefined' !== typeof (assessmentPlan.actionsWhenMet)) {
+            for (var iActionMet = 0, actionMet; actionMet = assessmentPlan["actionsWhenMet"][iActionMet++]; ) {
+                actions.push(actionMet);
+            }
+        }
         return { 
             nMetCriteria: 1,
-            metObs: metObsResults
+            metObs: metObsResults,
+            actionsToTake: actions 
         };
     } else {
 //        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+        if ('undefined' !== typeof (assessmentPlan.actionsNotMet)) {
+            for (var iActionNotMet = 0, actionNotMet; actionNotMet = assessmentPlan["actionsNotMet"][iActionNotMet++]; ) {
+                actions.push(actionNotMet);
+            }
+        }
         return { 
             nMetCriteria: 0,
-            metObs: metObsResults
+            metObs: metObsResults,
+            actionsToTake: actions
         };
     }
 }
@@ -209,11 +222,15 @@ function testSIRS(obss) {
     for (var i = 0, obs; obs = obss[i++]; ) {
         console.log("Observations -- "+obs["observationFocus"]["displayName"]+": "+obs["observationValue"]["value"] );
     }    
-    var res = assessRules(obss, sirsCriteria["assessmentPlan"], 0 );
+    var res = assessRules(obss, sirsCriteria, 0 );
     console.log ("nMetCriteria: "+res.nMetCriteria);
     console.log ("metObs length: "+res.metObs.length);
     for (var i = 0, obs; obs = res.metObs[i++]; ) {
         console.log("  !! warning observation!! "+obs["observationFocus"]["displayName"]+": "+obs["observationValue"]["value"] );
+    }    
+    console.log ("actions length: "+res.actionsToTake.length);
+    for (var i = 0, action; action = res.actionsToTake[i++]; ) {
+        console.log("  !! Take actions !! "+action );
     }    
 } 
 
@@ -226,11 +243,11 @@ for (var i = 0, pat; pat = patients[i++];) {
 //console.log(checkRule("37",sirsCriteria["assessments"]["assessments"][0]["rules"][0]))
 var tempRule = new Rule("2.16.840.1.113883.6.5",  "105723007",  "gt",  "decimal", 38);
 //tempRule = {codeSystem : "2.16.840.1.113883.6.5", code : "365630000", comparison: "gt", valueType: "decimal", value: 12};
-//console.log("assess rules for risk patient: "+assessRules(riskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
-//console.log("assess rules for non risk patient: "+assessRules(nonriskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
-//console.log("assess rules for low risk patient: "+assessRules(lowriskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
-//console.log("assess rules for med risk patient: "+assessRules(medriskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
-//console.log("assess rules for med risk patient2: "+assessRules(med2riskObsResults, sirsCriteria["assessmentPlan"], 0 ).nMetCriteria);
+//console.log("assess rules for risk patient: "+assessRules(riskObsResults, sirsCriteria, 0 ).nMetCriteria);
+//console.log("assess rules for non risk patient: "+assessRules(nonriskObsResults, sirsCriteria, 0 ).nMetCriteria);
+//console.log("assess rules for low risk patient: "+assessRules(lowriskObsResults, sirsCriteria, 0 ).nMetCriteria);
+//console.log("assess rules for med risk patient: "+assessRules(medriskObsResults, sirsCriteria, 0 ).nMetCriteria);
+//console.log("assess rules for med risk patient2: "+assessRules(med2riskObsResults, sirsCriteria, 0 ).nMetCriteria);
 
 console.log("test end");
 //console.log(tempRule)

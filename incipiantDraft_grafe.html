@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+
+
+
+
+<head>
+  <title>Free Clinic</title>
+  <style type="text/css">
+	#authenticationDiv
+	{
+		position:fixed;
+		padding:5%;
+		margin:0;
+		width: 100%;
+		height: 100%;
+    	background-color: #9F9F9F;
+		color: #FFFFFF;
+		text-align:center;
+		height:100%;
+		width:100%;
+	}
+	
+	#selectPatientDiv
+	{
+		padding:1%;
+		margin:0;
+		width: 100%;
+		height: 5%;
+    	background-color: #336699;
+		color: #FFFFFF;
+		text-align:left;
+	}
+
+	#patientData
+	{
+		padding:1%;
+		margin:0;
+		width: 100%;
+		height: 5%;
+    	background-color: #9F9F9F;
+		color: #FFFFFF;
+		text-align:left;
+	}
+	
+	input {margin:5px;}
+  </style>
+
+  <div id="header">
+  <h1>Yellowstone EHR</div>
+
+  
+
+  <div style="float: right"><a id="profileName" href="http://www.myphr.com/StartaPHR/Create_a_PHR.aspx" target="_blank"/><a>  </a><a href="javascript:authentication('logout')">Log out</a></h1>
+  </div>
+
+  <div id="greetClinician" style="display:none;"></div>
+
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!--I made a new change-->
+  <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
+  <script src="localTerminologyServer.js" charset="utf-8"></script>
+  
+  <script>
+	var startTime = new Date(); //;get current time. //20110305110000 yearmonthdayhour
+	
+	// this is the EMR data and patient models - simplified but different than the SIRS CDSS to demonstrate ability to accommodate any model
+	var patientObjectsArray = [ 
+		{'id':'401','name':'Issac A Lot','gender':'male','temperature':{'value':'40','evenTTime':new Date()}
+			,'heartRate':{'value':'120','evenTTime':new Date()}
+			,'respiratoryRate':{'value':'24','evenTTime':new Date()}
+			,'PaCO2':{'value':'23','evenTTime':new Date()}
+			,'whiteBloodCellCount':{'value':'15','evenTTime':new Date()}
+			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':1 SIRS met!
+		{'id':'504','name':'Ima Eel Thee','gender':'female','temperature':{'value':'37','evenTTime':new Date()}
+			,'heartRate':{'value':'70','evenTTime':new Date()}
+			,'respiratoryRate':{'value':'15','evenTTime':new Date()}
+			,'PaCO2':{'value':'23','evenTTime':new Date()}
+			,'whiteBloodCellCount':{'value':'8','evenTTime':new Date()}
+			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':0 SIRS not met, no missing values	
+		{'id':'default','name':'New Patient','gender':'default','temperature':{'value':'default','evenTTime':new Date()}
+			,'heartRate':{'value':'default','evenTTime':new Date()}
+			,'respiratoryRate':{'value':'default','evenTTime':new Date()}
+			,'PaCO2':{'value':'default','evenTTime':new Date()}
+			,'whiteBloodCellCount':{'value':'default','evenTTime':new Date()}
+			,'bandNeutrophilCount':{'value':'default','evenTTime':new Date()}} //'SIRScriteria':-1 missing values  
+	]; 
+	
+	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patients':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patients':{'id':'401','id':'504'}}};
+	var currentPatient;
+	var currentClinician = 'undefined';
+
+  function authentication(userID) {
+	  currentClinician = clinicianObjects[userID];
+	  console.log("check cliinci");
+	  console.log(clinicianObjects);
+	  console.log(userID);
+	  console.log(currentClinician);
+	  
+	//this EHR always starts with the first patient in the list of patients. One could implement an EHR where the last patient viewed would be shown, this would aid remembering where one left off.
+	if (userID == 'logout') {d3.select("#selectPatients").select("option").property('value',patientObjectsArray[0].name).attr('selected','selected');}
+	  
+	if(typeof currentClinician == 'undefined') {
+		el = document.getElementById('authenticationDiv'); 
+		if(el.style.display == 'none'){ el.style.display = ''; }
+		else { el.style.display = 'none'; } 
+	
+		el2 = document.getElementById('selectPatientDiv'); 
+		//if(el2.style.display == 'none'){ el2.style.display = ''; }
+		//else { 
+		el2.style.display = 'none'; //} 
+		
+	    el3 = document.getElementById('greetClinician'); 
+		if(el3.style.display == 'none'){ 
+			el3.style.display = ''; 
+			if (typeof currentClinician !== 'undefined') { 
+				el3.innerHTML = "Welcome to the Clinic "+currentClinician.role+" "+currentClinician.name;
+			}
+			else {
+				el3.innerHTML = "View only";
+				//d3.select("#selectPatients");
+				document.forms["getUserId"].reset();
+			}
+		}
+		else { el3.style.display = 'none'; } 
+	}
+	if(typeof currentClinician != 'undefined'){
+		el = document.getElementById('authenticationDiv'); 
+		if(el.style.display == 'none'){ el.style.display = ''; }
+		else { el.style.display = 'none'; } 
+		
+		el2 = document.getElementById('selectPatientDiv'); 
+		if(el2.style.display == 'none'){ el2.style.display = ''; }
+		else { el2.style.display = 'none'; } 
+		
+	 // if( typeof clinicianObjects[userID] == 'undefined') { 
+		//document.forms["getUserId"].reset(); 
+		//return "notValidUserId";
+	  //}
+	  
+	  
+	  //create dropdown for patient selection
+		d3.select("#selectPatients")
+			.style('display','')
+			.on("change", function() {
+					var patientName = this.value;
+				//	alert(patientName);
+					populateEHRdata(patientName);
+					selectEHRView(patientName);
+				//	var viewing = this.value;
+				//	window.location = [location.href, "?viewing=", viewing].join('');
+					
+				})
+			.selectAll("option")
+			.data(patientObjectsArray)//,function(d){return d.id})
+			.enter()
+			.append("option")
+			//Provide available text for the dropdown options
+			//.attr("value",function(d) {return d.key;})
+			.text(function(d) {console.log("here"+d.name);return d.name;});
+	
+	  //default values into EHR form input fields
+		populateEHRdata(patientObjectsArray[0].name);
+	
+	  //create greeting of Clinician
+		el3 = document.getElementById('greetClinician'); 
+		if(el3.style.display == 'none'){ 
+			el3.style.display = ''; 
+			if (typeof currentClinician !== 'undefined') { 
+				el3.innerHTML = "Welcome to the Clinic "+currentClinician.role+" "+currentClinician.name;
+			}
+			else {
+				el3.innerHTML = "View only"; //just in case
+				//d3.select("#selectPatients").remove(); //just in case
+			}
+		}
+		else { 
+			el3.style.display = 'none';
+		}
+
+          //create profile
+                el4 = document.getElementById('profileName');
+                el4.innerHTML = currentClinician.name; 
+	}
+
+  } //authentication
+	
+	//changes values on EHR form input fields
+	function populateEHRdata(patient) {
+		console.log("meep "+patient+"");
+		patientObjectsArray.forEach(function(d) {
+			if(d.name == patient ) {
+				document.forms["patientData"].reset();
+				
+				//reset SIRS COGNATIVE ASSISTANCE BAR
+				d3.select("#SCAB").remove();
+				//reset missing notices
+				d3.selectAll(".missingNotice").remove();
+				
+				console.log("hits "+d.name+" "+d.temperature.value+" ");
+				d3.select("#temperature").attr("value",+d.temperature.value).style("color","black");
+					//.on("change",function (){updateValue(d.name,"temperature");});
+				d3.select("#heartRate").attr("value",+d.heartRate.value).style("color","black");
+				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate.value).style("color","black");
+				d3.select("#PaCO2").attr("value",+d.PaCO2.value).style("color","black");
+				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount.value).style("color","black");
+				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount.value).style("color","black");
+				
+				checkSIRSvalues({"patientData":d,"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
+				//will append result to patient record
+				//message contains criteria result, which values were bad, instructions for changing view
+				
+				
+				return true;
+			}
+		});
+	}
+	
+	
+	function updatePatientData (field) {
+	 if (typeof currentClinician !== 'undefined') { //make sure we've got a clinician logged in
+		var patientNames = d3.select('#selectPatients').node(); //orient to select that has patient names
+		var patientNameSelected = patientNames.options[patientNames.selectedIndex].value; //get value of the option which has been currently selected
+		
+		var datumToChange = field.id;
+		var newValue = field.value;
+		var newEvenTTime = new Date();
+	console.log("TRY iT "+field.id+" "+field.value+" "+patientNameSelected);
+	   
+		//update value and Event Time!
+		//run sirs_critieriaCHecker and also does some house-keeping 
+		for(var i = 0; i < patientObjectsArray.length; i++) {
+			if(patientObjectsArray[i].name == patientNameSelected ) {
+			
+			  //update field for patient
+				//console.log("vale"+newValue+" "+datumToChange);
+				patientObjectsArray[i][datumToChange].value = newValue;
+				console.log("secods "+newEvenTTime.getTime());
+				//inefficient but records that a new date has been entered in
+				var milliseconds = newEvenTTime.getTime();
+				patientObjectsArray[i][datumToChange].evenTTime.setTime(newEvenTTime.getTime());
+				console.log("secods "+newEvenTTime.getTime());
+				console.log(patientObjectsArray[i][datumToChange].evenTTime.toLocaleTimeString() );
+				
+			  //house-keeping
+				document.forms["patientData"].reset();
+				//reset SIRS COGNATIVE ASSISTANCE BAR
+				d3.select("#SCAB").remove();
+				//reset missing notices
+				d3.selectAll(".missingNotice").remove();
+				
+				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
+				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
+					//.on("change",function (){updateValue(d.name,"temperature");});
+				d3.select("#heartRate").attr("value",+patientObjectsArray[i].heartRate.value).style("color","black");
+				d3.select("#respiratoryRate").attr("value",+patientObjectsArray[i].respiratoryRate.value).style("color","black");
+				d3.select("#PaCO2").attr("value",+patientObjectsArray[i].PaCO2.value).style("color","black");
+				d3.select("#whiteBloodCellCount").attr("value",+patientObjectsArray[i].whiteBloodCellCount.value).style("color","black");
+				d3.select("#bandNeutrophilCount").attr("value",+patientObjectsArray[i].bandNeutrophilCount.value).style("color","black");
+				
+			  //checking SIRS criteria
+				checkSIRSvalues({"patientData":patientObjectsArray[i],"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
+			}
+		}
+	 }
+	}
+	
+	function selectEHRView(field2){
+		if (field2 == "Issac A Lot"){
+			document.getElementById('imgId').src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ";
+			document.getElementById('imgId').reload(true);
+		} else if (field2 == "Ima Eel Thee"){
+			document.getElementById('imgId').src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXT2pXRUFtT3lpTUU";						
+			document.getElementById('imgId').reload(true);
+		} else {
+			document.getElementById('imgId').src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXOHpuUVRNNzdTRzQ";			
+			document.getElementById('imgId').reload(true);
+		}
+	}
+  </script>
+</head>
+<body >
+	<div class="mainContent">
+		<div id="authenticationDiv" > <!--needs to cover entire page-->
+			<form id="getUserId"><!-- method="post" action="authentication(value);" -->
+			<!--get id then alter value on page for id-->
+				<div class="question">
+					<span div class="questionLable">Enter your unique login ID (for Demo use 111 for Nurse Jack or 101 for Doctor Jill) then press authenticate</span>
+                     <span class="choices"><input type="number" id="userID" onkeydown="if (event.keyCode == 13) {document.getElementById('btnAuth').click();event.returnValue=false;event.cancel=true;}"> <!--onchange="authentication()"--></span></br>
+					 <input type="button" id="btnAuth" value="Authenticate" onclick="authentication(document.getElementById('userID').value)" />
+				</div>
+			</form>
+		</div>
+
+		
+		<div id="selectPatientDiv" style="display:none;">
+			<!--drop down OR images OR drop-down with images-->
+			<!--once patient selected then values populate OR if new patient selected then is blank-->
+			Please select a patient 
+			<select id="selectPatients" >
+			</select>
+		</div>
+		
+		<div id="patientData" name="patientData" >
+			<!--responds to drop down in select patient
+			Name
+			ID
+			SIRS Criteria-->
+			<form id="patientData">
+				<span id="patientName">
+				<script></script>
+				</span> <!--HERE HER EH HERE HEHR E-->
+				<a href="http://emedicine.medscape.com/article/168943-overview" target="_blank"><img src="https://docs.google.com//uc?id=0B6x8Qg3KYwHXTmI0WFdKNHpuM0E"></a>
+				<span style="font-weight: bold;">SIRS &nbsp;</span>
+				<span class="choicestemperature">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"> </span>
+				<span class="choicesheartRate">heart rate<input type="number" id="heartRate"> </span>
+				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate"> </span></br>
+				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2"> </span>
+				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount"></span>
+				<span class="choicesbandNeutrophilCount">bandNeutrophilCount<input type="number" id="bandNeutrophilCount"> </span>
+			</form>	
+			<!--script language="javascript">  
+				var currentPatientName = url('?viewing');
+			</script-->
+
+			
+			<div id="developmentTesting" >
+				<input type="button" value="Run Development Test" onclick="testCases();" />
+			
+				<script src="sirs-cds.js" charset="utf-8"></script>
+				<script src="runCheck.js" charset="utf-8"></script>
+				<script>
+					//for development testing
+					function testCases() {
+						for (var i = 0, pat; pat = patients[i++];) {
+							console.log("assessing patient #"+i);
+							testSIRS(pat);
+						}
+					}
+				</script>
+			</div>
+			
+		</div>
+
+		<img id="imgId" src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ">
+
+	</div>
+</body>
+</html>
