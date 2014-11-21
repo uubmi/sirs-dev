@@ -110,6 +110,9 @@
 		//else { 
 		el2.style.display = 'none'; //} 
 		
+		var el5 = document.getElementById('patientDataDiv'); 
+		el5.style.display = 'none'; 
+		
 	    el3 = document.getElementById('greetClinician'); 
 		if(el3.style.display == 'none'){ 
 			el3.style.display = ''; 
@@ -132,6 +135,10 @@
 		el2 = document.getElementById('selectPatientDiv'); 
 		if(el2.style.display == 'none'){ el2.style.display = ''; }
 		else { el2.style.display = 'none'; } 
+		
+		var el5 = document.getElementById('patientDataDiv'); 
+		if(el5.style.display == 'none'){ el5.style.display = ''; }
+		else { el5.style.display = 'none'; } 
 		
 	 // if( typeof clinicianObjects[userID] == 'undefined') { 
 		//document.forms["getUserId"].reset(); 
@@ -301,7 +308,7 @@
 			</select>
 		</div>
 		
-		<div id="patientData" name="patientData" >
+		<div id="patientDataDiv" name="patientData" style="display:none;">
 			<!--responds to drop down in select patient
 			Name
 			ID
@@ -313,11 +320,11 @@
 				<a href="http://emedicine.medscape.com/article/168943-overview" target="_blank"><img src="https://docs.google.com//uc?id=0B6x8Qg3KYwHXTmI0WFdKNHpuM0E"></a>
 				<span style="font-weight: bold;">SIRS &nbsp;</span>
 				<span class="choicestemperature">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"> </span>
-				<span class="choicesheartRate">heart rate<input type="number" id="heartRate"> </span>
-				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate"> </span></br>
-				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2"> </span>
-				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount"></span>
-				<span class="choicesbandNeutrophilCount">bandNeutrophilCount<input type="number" id="bandNeutrophilCount"> </span>
+				<span class="choicesheartRate">heart rate<input type="number" id="heartRate" onchange="updatePatientData(this)"> </span>
+				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate" onchange="updatePatientData(this)"> </span></br>
+				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2" onchange="updatePatientData(this)"> </span>
+				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount" onchange="updatePatientData(this)"></span>
+				<span class="choicesbandNeutrophilCount" >bandNeutrophilCount<input type="number" id="bandNeutrophilCount" onchange="updatePatientData(this)"> </span>
 			</form>	
 			<!--script language="javascript">  
 				var currentPatientName = url('?viewing');
@@ -325,7 +332,7 @@
 
 			
 			<div id="developmentTesting" >
-				<input type="button" value="Run Development Test" onclick="testCases();" />
+				<!--input type="button" value="Run Development Test" onclick="testCases();" /-->
 			
 				<script src="sirs-cds.js" charset="utf-8"></script>
 				<script src="runCheck.js" charset="utf-8"></script>
