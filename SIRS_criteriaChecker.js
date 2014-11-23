@@ -43,8 +43,18 @@ function handleSIRSpackage (){
 if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	console.log("sirs met");
 	
+	//contact clinical staff via text message
+	
 	//SNOMEDtoLocalVariableSIRS(observationFocus.code)
 	//gives which EMR variable to indicate
+	
+	function doctorInformed() {
+	//adds observation of order for doctor to be informed with EventTime
+	}
+	function orderMade () {
+	//adds observation of order for bundle with EventTime
+	//open dummy CPOE module with orders pre-filled as an order set
+	}
 	
 	if (EMRobject.clinician.role == "Nurse") {
 	//sirsResponse(object,"nurse");
@@ -53,8 +63,9 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
-	}
+	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("type","button").attr("value","Inform Doctor").on("click",doctorInformed()).style("color","red").style("font-size","40px").style("font-weight","bold");
+	 }
 	
 	if (EMRobject.clinician.role == "Doctor") {
 		//sirsResponse(object,"physician");
@@ -63,7 +74,8 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
+	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("type","button").attr("value","Order Bundle").on("click",orderMade()).style("color","red").style("font-size","40px").style("font-weight","bold");
 	}
 	
 }
