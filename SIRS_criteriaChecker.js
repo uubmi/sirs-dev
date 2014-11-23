@@ -35,10 +35,11 @@ var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ;
 //console.log(runCheck(transformedPatientDataArray));
 //console.log("did we change EMR?");console.log(EMRobject.patientData);
 var sirsResults = new Array( );
-
 sirsResults = runCheck(transformedPatientDataArray);
 //console.log("results");
 //console.log(sirsResults);
+handleSIRSpackage();
+function handleSIRSpackage (){
 if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	console.log("sirs met");
 	
@@ -52,7 +53,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").text("SIRS Criteria Met"); 
 	}
 	
 	if (EMRobject.clinician.role == "Doctor") {
@@ -60,9 +61,9 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 //object updated with response package
 	 //actions to be taken are locally determined
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
-		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
+		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","orange");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").append("h1").text("SIRS Criteria Met"); 
 	}
 	
 }
@@ -76,7 +77,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
 		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
 		//console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
-		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","green").text(" ?Missing?");
+		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","blue").text(" ?Missing?");
 	 }
 	 
 	}
@@ -93,6 +94,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	}
 	
   }
+ }//handleSIRSpackage
 }//checkSIRSvalues
 
 //critical function! to convert from local EMR patient information model to the SIRS EMR independent CDSS information model
@@ -165,7 +167,11 @@ function transformPatientData (patientData) {
 	return sirsObservations;
 };//transformPatientData function
 
-
+pullEMRtimer();
+function pullEMRtimer (intervalinMin){
+//if intervalinMin is NaN or undefined then use 30 min
+//if zero it will fire immediately
+}
 
 checkCriteriaTimer();
 
@@ -186,6 +192,12 @@ function checkCriteriaTimer(pateints) {
 		var resultUpdateCheck = updateChecker(transformedPatientDataArray);
 		
 		console.log(resultUpdateCheck);
+	  function actionTimerChecker(patientData) {
+		//requires checking
+			//has SIRS been met
+			//does action item event time for patient have a 
+			
+	  }
 		
 	  function updateChecker(patientData) {
 		//rule encoded for checking that the interval between checks has not passed
@@ -206,24 +218,6 @@ function checkCriteriaTimer(pateints) {
 					new Rule("2.16.840.1.113883.6.5", "442113000", "lt", "integer", currentTime - adultIntervalToTest)  // Immature neutrophil count must have entered no more than 2 hours ago
 					)
 				}
-				//,
-				//{minRequirement: 1, 
-				//	rules : new Array (    
-				//	new Rule("2.16.840.1.113883.6.5", "301113001", "doesNotExist", "decimal", 0) // Heart rate must exist
-				//	)
-				//},
-				//{minRequirement: 1, 
-				//	rules : new Array (    
-				//	new Rule("2.16.840.1.113883.6.5", "301283003", "doesNotExist", "decimal", 0),  // Respiratory rate must exist
-				//	new Rule("2.16.840.1.113883.6.5", "373677008", "doesNotExist", "decimal", 0)  // PaCO2 < 32(mmHg) must exist
-				//	)
-				//},
-				//{minRequirement: 1, 
-				//	rules : new Array (   
-				//		new Rule("2.16.840.1.113883.6.5", "365630000", "doesNotExist", "decimal", 0),  // Whole white blood cell count must exist 
-				//		new Rule("2.16.840.1.113883.6.5", "442113000", "doesNotExist", "decimal", 0)  // Immature neutrophil count must exist
-				//	)
-				//}
 				)
 			},
 			actions : "checking Timing of SIRS criteria"
