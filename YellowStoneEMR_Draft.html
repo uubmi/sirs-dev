@@ -1,9 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 
-
-
-
 <head>
   <title>Free Clinic</title>
   <style type="text/css">
@@ -12,20 +9,25 @@
 		position:fixed;
 		padding:5%;
 		margin:0;
-		width: 100%;
+		width: 1000px;
 		height: 100%;
     	background-color: #9F9F9F;
 		color: #FFFFFF;
 		text-align:center;
-		height:100%;
-		width:100%;
+	}
+	
+	#greetClinician
+	{
+		padding:1%;
+		margin:5px;
+		width: 1005px;
 	}
 	
 	#selectPatientDiv
 	{
 		padding:1%;
-		margin:0;
-		width: 100%;
+		margin:5px;
+		width: 1005px;
 		height: 5%;
     	background-color: #336699;
 		color: #FFFFFF;
@@ -35,27 +37,53 @@
 	#patientData
 	{
 		padding:1%;
-		margin:0;
-		width: 100%;
+		margin:5px;
+		width: 1005px;
 		height: 5%;
     	background-color: #9F9F9F;
 		color: #FFFFFF;
 		text-align:left;
 	}
 	
-	input {margin:5px;}
+	#emrName
+	{
+		width: 200px;
+		font-size: 20pt;
+		float: left;
+	}
+	
+	#slogan{
+		margin: 5px;
+		float: right;
+	}
+	
+	#header{
+		margin:5px;
+		width:1000px;
+		height:100px;
+		background:silver;
+	}
+	
+	#imgId{
+		width:1005px;
+		margin:5px;
+	}
+	
+	img.logo{
+		margin:10px;
+		width:100px;
+	}
+	
+	input {
+		margin:5px;
+	}
+	input[type=number]{
+		width:50pt;
+	}
+	
   </style>
 
-  <div id="header">
-  <h1>Yellowstone EHR</div>
-  <span><h2>Your new medical home</h2><img src="http://www.globallightminds.com/wp-content/uploads/2012/08/Morning-Glory-Rainbow-Pool-Yellowstone.jpg" style="width:50px;"><img src="http://media-cache-ak0.pinimg.com/236x/a5/cd/ed/a5cded293393dbe79664443bf4e8e1da.jpg" style="width:50px;"></span>
-
-  
-
-  <div style="float: right"><a id="profileName" href="http://www.myphr.com/StartaPHR/Create_a_PHR.aspx" target="_blank"/><a>  </a><a href="javascript:authentication('logout')">Log out</a></h1>
-  </div>
-
-  <div id="greetClinician" style="display:none;"></div>
+ 
 
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <!--I made a new change-->
@@ -254,7 +282,7 @@
 		var locationIs = "#timeStamp"+datumToUse;
 		var timeStampToUse = eventDateObject.toLocaleTimeString();
 		
-		d3.select(locationIs).style("color","black").text(" "+timeStampToUse+"    ");
+		d3.select(locationIs).style("color","black").style("font-size","10pt").text(" "+timeStampToUse+"    ");
 	}
 	
 	function updatePatientData (field) {
@@ -328,7 +356,20 @@
 	}
   </script>
 </head>
-<body >
+<body style="margin:0;padding:0;background:azure;" >
+<div style="width:1000px; margin:auto;">
+
+ <div id="header">
+  <div id="emrName">Yellowstone EHR</div>
+  <div id="slogan">Your new medical home</h2><img class="logo" src="http://www.globallightminds.com/wp-content/uploads/2012/08/Morning-Glory-Rainbow-Pool-Yellowstone.jpg"><img class="logo" src="http://media-cache-ak0.pinimg.com/236x/a5/cd/ed/a5cded293393dbe79664443bf4e8e1da.jpg"></div>
+</div>
+  
+
+  <div style="float: right"><a id="profileName" href="http://www.myphr.com/StartaPHR/Create_a_PHR.aspx" target="_blank"/><a>  </a><a href="javascript:authentication('logout')">Log out</a></h1>
+  </div>
+
+  <div id="greetClinician" style="display:none;"></div>
+  
 	<div class="mainContent">
 		<div id="authenticationDiv" > <!--needs to cover entire page-->
 			<form id="getUserId"><!-- method="post" action="authentication(value);" -->
@@ -361,12 +402,12 @@
 				</span> <!--HERE HER EH HERE HEHR E-->
 				<a href="http://emedicine.medscape.com/article/168943-overview" target="_blank"><img src="https://docs.google.com//uc?id=0B6x8Qg3KYwHXTmI0WFdKNHpuM0E"></a>
 				<span style="font-weight: bold;">SIRS &nbsp;</span>
-				<span class="choicestemperature">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"><span id="timeStamptemperature"></span> </span>
-				<span class="choicesheartRate">heart rate<input type="number" id="heartRate" onchange="updatePatientData(this)"><span id="timeStampheartRate"></span> </span>
-				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate" onchange="updatePatientData(this)"> </span><span id="timeStamprespiratoryRate"> </span></br>
-				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2" onchange="updatePatientData(this)"><span id="timeStampPaCO2"></span> </span>
-				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount" onchange="updatePatientData(this)"><span id="timeStampwhiteBloodCellCount"></span> </span>
-				<span class="choicesbandNeutrophilCount" >bandNeutrophilCount<input type="number" id="bandNeutrophilCount" onchange="updatePatientData(this)"><span id="timeStampbandNeutrophilCount"></span> </span>
+				<span class="choicestemperature" style="margin-left:15px;">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"><span class="SIRSfield" id="timeStamptemperature"></span> </span>
+				<span class="choicesheartRate" style="margin-left:15px;">heart rate<input type="number" id="heartRate" onchange="updatePatientData(this)"><span class="SIRSfield" id="timeStampheartRate"></span> </span> 
+				<span class="choicesrespiratoryRate" style="margin-left:15px;">respiratory rate<input type="number" id="respiratoryRate" onchange="updatePatientData(this)"> </span><span class="SIRSfield" id="timeStamprespiratoryRate"> </span></br>
+				<span class="choicesPaCO2" style="margin-left:15px;">PaCO2<input type="number" id="PaCO2" onchange="updatePatientData(this)"><span class="SIRSfield" id="timeStampPaCO2"></span> </span>
+				<span class="choiceswhiteBloodCellCount" style="margin-left:15px;">white blood cell count<input type="number" id="whiteBloodCellCount" onchange="updatePatientData(this)"><span class="SIRSfield" id="timeStampwhiteBloodCellCount"></span> </span>
+				<span class="choicesbandNeutrophilCount" style="margin-left:15px;">bandNeutrophilCount<input type="number" id="bandNeutrophilCount" onchange="updatePatientData(this)"><span class="SIRSfield" id="timeStampbandNeutrophilCount"></span> </span>
 			</form>	
 			<!--script language="javascript">  
 				var currentPatientName = url('?viewing');
@@ -394,5 +435,6 @@
 		<img id="imgId" src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ">
 
 	</div>
+</div>
 </body>
 </html>
