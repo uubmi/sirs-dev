@@ -48,6 +48,7 @@
 
   <div id="header">
   <h1>Yellowstone EHR</div>
+  <span><h2>Your new medical home</h2><img src="http://www.globallightminds.com/wp-content/uploads/2012/08/Morning-Glory-Rainbow-Pool-Yellowstone.jpg" style="width:50px;"><img src="http://media-cache-ak0.pinimg.com/236x/a5/cd/ed/a5cded293393dbe79664443bf4e8e1da.jpg" style="width:50px;"></span>
 
   
 
@@ -195,34 +196,66 @@
 	//changes values on EHR form input fields
 	function populateEHRdata(patient) {
 		console.log("meep "+patient+"");
-		patientObjectsArray.forEach(function(d) {
-			if(d.name == patient ) {
+		for(var i = 0; i < patientObjectsArray.length; i++) {
+			if(patientObjectsArray[i].name == patient ) {
 				document.forms["patientData"].reset();
 				
 				//reset SIRS COGNATIVE ASSISTANCE BAR
 				d3.select("#SCAB").remove();
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
+				//reset timeStamp notices
+				d3.selectAll(".timeStamp").remove();
 				
-				console.log("hits "+d.name+" "+d.temperature.value+" ");
-				d3.select("#temperature").attr("value",+d.temperature.value).style("color","black");
-					//.on("change",function (){updateValue(d.name,"temperature");});
-				d3.select("#heartRate").attr("value",+d.heartRate.value).style("color","black");
-				d3.select("#respiratoryRate").attr("value",+d.respiratoryRate.value).style("color","black");
-				d3.select("#PaCO2").attr("value",+d.PaCO2.value).style("color","black");
-				d3.select("#whiteBloodCellCount").attr("value",+d.whiteBloodCellCount.value).style("color","black");
-				d3.select("#bandNeutrophilCount").attr("value",+d.bandNeutrophilCount.value).style("color","black");
+				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
+				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
+			    //update TimeStamp patientObjectsArray[i][datumToChange]
+				var eventTimetoUse = patientObjectsArray[i].temperature.evenTTime;
+				console.log("time ");
+				upDateTimeStamp(eventTimetoUse,"temperature");
+					//.on("change",function (){updateValue(patientObjectsArray[i].name,"temperature");});
+				d3.select("#heartRate").attr("value",+patientObjectsArray[i].heartRate.value).style("color","black");
+				//update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i].heartRate.evenTTime;
+				upDateTimeStamp(eventTimetoUse,"heartRate");
+				d3.select("#respiratoryRate").attr("value",+patientObjectsArray[i].respiratoryRate.value).style("color","black");
+							    //update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i].respiratoryRate.evenTTime;
+				upDateTimeStamp(eventTimetoUse,"respiratoryRate");
+				d3.select("#PaCO2").attr("value",+patientObjectsArray[i].PaCO2.value).style("color","black");
+							    //update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i].PaCO2.evenTTime;
+				upDateTimeStamp(eventTimetoUse,"PaCO2");
+				d3.select("#whiteBloodCellCount").attr("value",+patientObjectsArray[i].whiteBloodCellCount.value).style("color","black");
+							    //update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i].whiteBloodCellCount.evenTTime;
+				upDateTimeStamp(eventTimetoUse,"whiteBloodCellCount");
+				d3.select("#bandNeutrophilCount").attr("value",+patientObjectsArray[i].bandNeutrophilCount.value).style("color","black");
+				//update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i].bandNeutrophilCount.evenTTime;
+				upDateTimeStamp(eventTimetoUse,"bandNeutrophilCount");
 				
-				checkSIRSvalues({"patientData":d,"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
+
+				
+				checkSIRSvalues({"patientData":patientObjectsArray[i],"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
 				//will append result to patient record
 				//message contains criteria result, which values were bad, instructions for changing view
 				
 				
 				return true;
 			}
-		});
+		}
 	}
-	
+
+//adds location for timestamp to EHR	
+	function upDateTimeStamp (eventDateObject,dataElement) {
+		//when updatePatientData update timeStamp
+		var datumToUse = dataElement;
+		var locationIs = "#timeStamp"+datumToUse;
+		var timeStampToUse = eventDateObject.toLocaleTimeString();
+		
+		d3.select(locationIs).style("color","black").text(" "+timeStampToUse+"    ");
+	}
 	
 	function updatePatientData (field) {
 	 if (typeof currentClinician !== 'undefined') { //make sure we've got a clinician logged in
@@ -246,6 +279,7 @@
 				//inefficient but records that a new date has been entered in
 				var milliseconds = newEvenTTime.getTime();
 				patientObjectsArray[i][datumToChange].evenTTime.setTime(newEvenTTime.getTime());
+				
 				console.log("secods "+newEvenTTime.getTime());
 				console.log(patientObjectsArray[i][datumToChange].evenTTime.toLocaleTimeString() );
 				
@@ -256,7 +290,11 @@
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				
+				//reset specific timestamp
+				//d3.selectAll(".timeStamp").remove();
+				
 				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
+				
 				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
 					//.on("change",function (){updateValue(d.name,"temperature");});
 				d3.select("#heartRate").attr("value",+patientObjectsArray[i].heartRate.value).style("color","black");
@@ -264,6 +302,10 @@
 				d3.select("#PaCO2").attr("value",+patientObjectsArray[i].PaCO2.value).style("color","black");
 				d3.select("#whiteBloodCellCount").attr("value",+patientObjectsArray[i].whiteBloodCellCount.value).style("color","black");
 				d3.select("#bandNeutrophilCount").attr("value",+patientObjectsArray[i].bandNeutrophilCount.value).style("color","black");
+				
+				//update TimeStamp
+				var eventTimetoUse = patientObjectsArray[i][datumToChange].evenTTime;
+				upDateTimeStamp(eventTimetoUse,field.id);
 				
 			  //checking SIRS criteria
 				checkSIRSvalues({"patientData":patientObjectsArray[i],"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
@@ -319,12 +361,12 @@
 				</span> <!--HERE HER EH HERE HEHR E-->
 				<a href="http://emedicine.medscape.com/article/168943-overview" target="_blank"><img src="https://docs.google.com//uc?id=0B6x8Qg3KYwHXTmI0WFdKNHpuM0E"></a>
 				<span style="font-weight: bold;">SIRS &nbsp;</span>
-				<span class="choicestemperature">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"> </span>
-				<span class="choicesheartRate">heart rate<input type="number" id="heartRate" onchange="updatePatientData(this)"> </span>
-				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate" onchange="updatePatientData(this)"> </span></br>
-				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2" onchange="updatePatientData(this)"> </span>
-				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount" onchange="updatePatientData(this)"></span>
-				<span class="choicesbandNeutrophilCount" >bandNeutrophilCount<input type="number" id="bandNeutrophilCount" onchange="updatePatientData(this)"> </span>
+				<span class="choicestemperature">temperature<input type="number" id="temperature" onchange="updatePatientData(this)"><span id="timeStamptemperature"></span> </span>
+				<span class="choicesheartRate">heart rate<input type="number" id="heartRate" onchange="updatePatientData(this)"><span id="timeStampheartRate"></span> </span>
+				<span class="choicesrespiratoryRate">respiratory rate<input type="number" id="respiratoryRate" onchange="updatePatientData(this)"> </span><span id="timeStamprespiratoryRate"> </span></br>
+				<span class="choicesPaCO2">PaCO2<input type="number" id="PaCO2" onchange="updatePatientData(this)"><span id="timeStampPaCO2"></span> </span>
+				<span class="choiceswhiteBloodCellCount">white blood cell count<input type="number" id="whiteBloodCellCount" onchange="updatePatientData(this)"><span id="timeStampwhiteBloodCellCount"></span> </span>
+				<span class="choicesbandNeutrophilCount" >bandNeutrophilCount<input type="number" id="bandNeutrophilCount" onchange="updatePatientData(this)"><span id="timeStampbandNeutrophilCount"></span> </span>
 			</form>	
 			<!--script language="javascript">  
 				var currentPatientName = url('?viewing');
