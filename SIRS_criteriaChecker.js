@@ -53,7 +53,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").text("SIRS Criteria Met"); 
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
 	}
 	
 	if (EMRobject.clinician.role == "Doctor") {
@@ -61,9 +61,9 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 //object updated with response package
 	 //actions to be taken are locally determined
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
-		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","orange");
+		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
-	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","yellow").append("h1").text("SIRS Criteria Met"); 
+	 d3.select("#selectPatientDiv").append("div").attr("id","SCAB").style("color","red").append("h1").text("SIRS Criteria Met"); 
 	}
 	
 }
@@ -77,7 +77,7 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.missingData.metObs.length; i++) {
 		var locationIs = ".choices"+SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code);
 		//console.log(SNOMEDtoLocalVariableSIRS(sirsResults.missingData.metObs[i].observationFocus.code));
-		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","blue").text(" ?Missing?");
+		d3.selectAll(locationIs).append("span").attr("class","missingNotice").style("color","green").text(" ?Missing?");
 	 }
 	 
 	}
