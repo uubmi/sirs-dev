@@ -47,13 +47,45 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	
 	//SNOMEDtoLocalVariableSIRS(observationFocus.code)
 	//gives which EMR variable to indicate
+	function bundleAppears() {
+		d3.select("#patientData").append("div").attr("id","bundleDiv")
+			.style("width", "430px")
+			.style("height", "200px")
+			.style("overflow","auto")
+			.style("display","block")
+			.append("img").attr("id","bundleGraphic")
+				.attr('width', "410px")
+				.attr('height', "800px")
+				.attr("src","images/BundlePic.png");
+	}
 	
 	function doctorInformed() {
+	  var metCriteriaString = "";
+	  for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
+		metCriteriaString = metCriteriaString+(SNOMEDtoLocalDisplayName(sirsResults.SIRS.metObs[i].observationFocus.code))+" at "+sirsResults.SIRS.metObs[i].observationValue.value+", ";
+	  }
 	//adds observation of order for doctor to be informed with EventTime
+	  alert("Email system is started with pre-configured message containing: "+"Patient "+EMRobject.patientData.name+" has met SIRS criteria "+metCriteriaString+" "+"Custom Message: ");
+	  var currentTime = new Date;
+	  d3.select("#patientData").select("#SCABmsg").select("#informAdoc").attr("value","Doctor has been Informed at "+currentTime.toLocaleTimeString()+"").on("click","");
 	}
-	function orderMade () {
+	function orderMake () {
 	//adds observation of order for bundle with EventTime
 	//open dummy CPOE module with orders pre-filled as an order set
+	//for now show Adult record
+	   		d3.select("#patientData").append("div").attr("id","orderDiv")
+			.style("width", "430px")
+			.style("height", "200px")
+			.style("overflow","auto")
+			.style("display","block")
+			.append("img").attr("id","bundleGraphic")
+				.attr('width', "410px")
+				.attr('height', "800px")
+				.attr("src","images/imagesFrom_sjrhem.ca_SepsisOrderSets/SEPSIS-ADULT-ORDER-SET-v2014Mar05.png")
+				.on("mouseover",function() {
+					d3.select("#patientData").append("div").attr("id","orderDiv")
+					.attr("src","images/BacteroidesFragilis_Gram.jpg");
+				});
 	}
 	
 	if (EMRobject.clinician.role == "Nurse") {
@@ -66,8 +98,11 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 d3.select("#patientData").style("background-color","yellow");
 	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("type","button").attr("value","Inform Doctor").on("click",doctorInformed()).style("color","red").style("font-size","40px").style("font-weight","bold");
-	 }
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","informAdoc").attr("type","button").attr("value","Inform Doctor?").on("click",function (){
+		doctorInformed();
+		bundleAppears();
+		}).style("color","red").style("font-size","20px").style("font-weight","bold");
+	}
 	
 	if (EMRobject.clinician.role == "Doctor") {
 		//sirsResponse(object,"physician");
@@ -80,8 +115,11 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
 	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button").attr("value","Documented infection or a potential source of infection?").on("click",function() {
-		d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
-		.attr("value","Order Bundle").on("click",orderMade()).style("font-size","40px");
+			bundleAppears();
+			d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
+			.attr("value","Order Bundle").on("click",function() { 
+				orderMake();
+			}).style("font-size","40px");
 		}).style("color","red").style("font-size","20px").style("font-weight","bold");
 	}
 	

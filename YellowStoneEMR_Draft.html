@@ -85,7 +85,7 @@
 
  
 
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="d3/d3.js" charset="utf-8"></script>
 <!--I made a new change-->
   <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
   <script src="localTerminologyServer.js" charset="utf-8"></script>
@@ -230,6 +230,8 @@
 				
 				//reset SIRS COGNATIVE ASSISTANCE BAR
 				d3.select("#SCABmsg").remove();
+				d3.select("#bundleDiv").remove();
+				d3.select("#orderDiv").remove();
 				d3.select("#patientData").style("background-color","#9F9F9F");
 				d3.select("#patientData").style("color","#FFFFFF");
 				//background-color: #9F9F9F;
@@ -319,6 +321,8 @@
 				document.forms["patientData"].reset();
 				//reset SIRS COGNATIVE ASSISTANCE BAR
 				d3.select("#SCABmsg").remove();
+				d3.select("#bundleDiv").remove();
+				d3.select("#orderDiv").remove();
 				d3.select("#patientData").style("background-color","#9F9F9F");
 				d3.select("#patientData").style("color","#FFFFFF");
 				//reset missing notices
