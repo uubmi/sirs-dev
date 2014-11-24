@@ -230,6 +230,10 @@
 				
 				//reset SIRS COGNATIVE ASSISTANCE BAR
 				d3.select("#SCABmsg").remove();
+				d3.select("#patientData").style("background-color","#9F9F9F");
+				d3.select("#patientData").style("color","#FFFFFF");
+				//background-color: #9F9F9F;
+				//color: #FFFFFF;
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				//reset timeStamp notices
@@ -315,6 +319,8 @@
 				document.forms["patientData"].reset();
 				//reset SIRS COGNATIVE ASSISTANCE BAR
 				d3.select("#SCABmsg").remove();
+				d3.select("#patientData").style("background-color","#9F9F9F");
+				d3.select("#patientData").style("color","#FFFFFF");
 				//reset missing notices
 				d3.selectAll(".missingNotice").remove();
 				

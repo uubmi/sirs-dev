@@ -63,6 +63,8 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
+	 d3.select("#patientData").style("background-color","yellow");
+	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
 	 d3.select("#patientData").select("#SCABmsg").append("input").attr("type","button").attr("value","Inform Doctor").on("click",doctorInformed()).style("color","red").style("font-size","40px").style("font-weight","bold");
 	 }
@@ -74,8 +76,13 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	 for(var i = 0; i< sirsResults.SIRS.metObs.length; i++) {
 		d3.select("#"+SNOMEDtoLocalVariableSIRS(sirsResults.SIRS.metObs[i].observationFocus.code)).style("color","red");
 	 }
+	 d3.select("#patientData").style("background-color","yellow");
+	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("type","button").attr("value","Order Bundle").on("click",orderMade()).style("color","red").style("font-size","40px").style("font-weight","bold");
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button").attr("value","Documented infection or a potential source of infection?").on("click",function() {
+		d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
+		.attr("value","Order Bundle").on("click",orderMade()).style("font-size","40px");
+		}).style("color","red").style("font-size","20px").style("font-weight","bold");
 	}
 	
 }
