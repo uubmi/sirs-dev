@@ -86,6 +86,10 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 					d3.select("#patientData").append("div").attr("id","orderDiv")
 					.attr("src","images/BacteroidesFragilis_Gram.jpg");
 				});
+			var currentTime = new Date;
+			d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
+			.attr("value","Bundle Ordered at "+currentTime.toLocaleTimeString()+"").on("click","");
+			
 	}
 	
 	if (EMRobject.clinician.role == "Nurse") {

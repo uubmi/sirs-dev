@@ -368,7 +368,23 @@
 </head>
 <body style="margin:0;padding:0;background:azure;" >
 <div style="width:1000px; margin:auto;">
-
+			<div id="developmentTesting" >
+				<input type="button" value="ResetEHR" onclick="location.reload();">
+				<!--input type="button" value="Run Development Test" onclick="testCases();" /-->
+			
+				<script src="sirs-cds.js" charset="utf-8"></script>
+				<script src="runCheck.js" charset="utf-8"></script>
+				<script>
+					//for development testing
+					function testCases() {
+						for (var i = 0, pat; pat = patients[i++];) {
+							console.log("assessing patient #"+i);
+							testSIRS(pat);
+						}
+					}
+				</script>
+			</div>
+			
  <div id="header">
   <div id="emrName">Yellowstone EHR</div>
   <div id="slogan">Your new medical home</h2><img class="logo" src="http://www.globallightminds.com/wp-content/uploads/2012/08/Morning-Glory-Rainbow-Pool-Yellowstone.jpg"><img class="logo" src="http://media-cache-ak0.pinimg.com/236x/a5/cd/ed/a5cded293393dbe79664443bf4e8e1da.jpg"></div>
@@ -424,21 +440,7 @@
 			</script-->
 
 			
-			<div id="developmentTesting" >
-				<!--input type="button" value="Run Development Test" onclick="testCases();" /-->
-			
-				<script src="sirs-cds.js" charset="utf-8"></script>
-				<script src="runCheck.js" charset="utf-8"></script>
-				<script>
-					//for development testing
-					function testCases() {
-						for (var i = 0, pat; pat = patients[i++];) {
-							console.log("assessing patient #"+i);
-							testSIRS(pat);
-						}
-					}
-				</script>
-			</div>
+
 			
 		</div>
 
