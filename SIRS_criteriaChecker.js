@@ -35,11 +35,22 @@ var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ;
 //console.log(runCheck(transformedPatientDataArray));
 //console.log("did we change EMR?");console.log(EMRobject.patientData);
 var sirsResults = new Array( );
-sirsResults = runCheck(transformedPatientDataArray);
+sirsResults = runCheck(transformedPatientDataArray); //HERE IS WHERE THE KNOWLEDGE EXECUTION ENGINE result canbe found
+
 //console.log("results");
 //console.log(sirsResults);
 
-handleSIRSpackage();
+//logic for action to be taken when patinet is not the current patient
+if ((typeof isCurrentlyViewedPatinet == 'undefined') || isCurrentlyViewedPatinet ) {
+	handleSIRSpackage();
+}
+else {
+	if(sirsResults.SIRS.nMetCriteria == 1) {
+		//what to do when a patient that is not currently being viewed has SIRS criteria met
+		
+	}
+}
+
 function handleSIRSpackage (){
 var slect = d3.select("#patientData").select("#SCABmsg");
 console.log("sirs met "+document.getElementById("#SCABmsg"));
@@ -161,6 +172,7 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	
   }
  }//handleSIRSpackage
+ 
 }//checkSIRSvalues
 
 //critical function! to convert from local EMR patient information model to the SIRS EMR independent CDSS information model
