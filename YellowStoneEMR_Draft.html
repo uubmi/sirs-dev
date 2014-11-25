@@ -6,10 +6,10 @@
   <style type="text/css">
 	#authenticationDiv
 	{
-		position:fixed;
-		padding:5%;
-		margin:0;
-		width: 1000px;
+		padding:1%;
+		margin:5px;
+		width: 1005px;
+		height: 5%;
 		height: 100%;
     	background-color: #9F9F9F;
 		color: #FFFFFF;
@@ -169,6 +169,10 @@
 		if(el5.style.display == 'none'){ el5.style.display = ''; }
 		else { el5.style.display = 'none'; } 
 		
+		var el6 = document.getElementById('imgId'); 
+		if(el6.style.display == 'none'){ el6.style.display = ''; }
+		else { el6.style.display = 'none'; } 
+		
 	 // if( typeof clinicianObjects[userID] == 'undefined') { 
 		//document.forms["getUserId"].reset(); 
 		//return "notValidUserId";
@@ -233,6 +237,7 @@
 				//reset timeStamp notices
 				d3.selectAll(".timeStamp").remove();
 				
+				d3.selectAll("imgId").remove();
 				
 				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
 				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
@@ -449,7 +454,7 @@
 			
 		</div>
 
-		<img id="imgId" src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ">
+		<img id="imgId" src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ" style="display:none;">
 
 	</div>
 </div>
