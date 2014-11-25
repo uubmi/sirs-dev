@@ -38,9 +38,13 @@ var sirsResults = new Array( );
 sirsResults = runCheck(transformedPatientDataArray);
 //console.log("results");
 //console.log(sirsResults);
+
 handleSIRSpackage();
 function handleSIRSpackage (){
-if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
+var slect = d3.select("#patientData").select("#SCABmsg");
+console.log("sirs met "+document.getElementById("#SCABmsg"));
+if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
+  if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 	console.log("sirs met");
 	
 	//contact clinical staff via text message
@@ -127,7 +131,8 @@ if(sirsResults.SIRS.nMetCriteria == 1) { //SIRS criteria met
 		}).style("color","red").style("font-size","20px").style("font-weight","bold");
 	}
 	
-}
+  }
+}//if SIRS bar exists will not remake it
 
   if(sirsResults.missingData.nMetCriteria == 1) { //missing SIRS criteria
 	console.log("missing data");

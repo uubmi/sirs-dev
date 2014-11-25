@@ -222,24 +222,17 @@
   } //authentication
 	
 	//changes values on EHR form input fields
+	//CONSIDER Putting in SIRS_criteriaCheck.js to have it be obviously in control
 	function populateEHRdata(patient) {
 		console.log("meep "+patient+"");
 		for(var i = 0; i < patientObjectsArray.length; i++) {
 			if(patientObjectsArray[i].name == patient ) {
 				document.forms["patientData"].reset();
 				
-				//reset SIRS COGNATIVE ASSISTANCE BAR
-				d3.select("#SCABmsg").remove();
-				d3.select("#bundleDiv").remove();
-				d3.select("#orderDiv").remove();
-				d3.select("#patientData").style("background-color","#9F9F9F");
-				d3.select("#patientData").style("color","#FFFFFF");
-				//background-color: #9F9F9F;
-				//color: #FFFFFF;
-				//reset missing notices
-				d3.selectAll(".missingNotice").remove();
+				
 				//reset timeStamp notices
 				d3.selectAll(".timeStamp").remove();
+				
 				
 				console.log("hits "+patientObjectsArray[i].name+" "+patientObjectsArray[i].temperature.value+" ");
 				d3.select("#temperature").attr("value",+patientObjectsArray[i].temperature.value).style("color","black");
@@ -270,6 +263,18 @@
 				upDateTimeStamp(eventTimetoUse,"bandNeutrophilCount");
 				
 
+								//reset SIRS COGNATIVE ASSISTANCE BAR
+				//if ( document.getElementById("#SCABmsg") == null ) {
+				  d3.select("#SCABmsg").remove();
+				  d3.select("#bundleDiv").remove();
+				  d3.select("#orderDiv").remove();
+				
+				d3.select("#patientData").style("background-color","#9F9F9F");
+				d3.select("#patientData").style("color","#FFFFFF");
+				//background-color: #9F9F9F;
+				//color: #FFFFFF;
+				//reset missing notices
+				d3.selectAll(".missingNotice").remove();
 				
 				checkSIRSvalues({"patientData":patientObjectsArray[i],"clinician":currentClinician}); //patient object sent to SIRS_criteriaChecker.js
 				//will append result to patient record
