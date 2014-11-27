@@ -84,7 +84,8 @@
   </style>
 
  
-
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="d3/d3.js" charset="utf-8"></script>
 <!--I made a new change-->
   <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
@@ -421,12 +422,11 @@
 				<div class="question">
 					<span div class="questionLable">Enter your unique login ID (for Demo use 111 for Nurse Jack or 101 for Doctor Jill) then press authenticate</span>
                      <span class="choices"><input type="number" id="userID" onkeydown="if (event.keyCode == 13) {document.getElementById('btnAuth').click();event.returnValue=false;event.cancel=true;}"> <!--onchange="authentication()"--></span></br>
-					 <input type="button" id="btnAuth" value="Authenticate" onclick="authentication(document.getElementById('userID').value)" />
+					 <input type="button" class="btn btn-primary btn-lg"id="btnAuth" value="Authenticate" onclick="authentication(document.getElementById('userID').value)" />
 				</div>
 			</form>
 		</div>
 
-		
 		<div id="selectPatientDiv" style="display:none;">
 			<!--drop down OR images OR drop-down with images-->
 			<!--once patient selected then values populate OR if new patient selected then is blank-->
