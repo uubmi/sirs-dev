@@ -117,7 +117,7 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	 d3.select("#patientData").style("background-color","yellow");
 	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","informAdoc").attr("type","button").attr("value","Inform Doctor?").attr("class","btn btn-primary btn-lg").on("click",function (){
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","informAdoc").attr("type","button").attr("value","Inform Doctor?").on("click",function (){
 		doctorInformed();
 		bundleAppears();
 		}).style("color","red").style("font-size","20px").style("font-weight","bold");
@@ -133,7 +133,7 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	 d3.select("#patientData").style("background-color","yellow");
 	 d3.select("#patientData").style("color","black");
 	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button")..attr("class","btn btn-primary btn-lg").attr("value","Documented infection or a potential source of infection?").on("click",function() {
+	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button").attr("value","Documented infection or a potential source of infection?").on("click",function() {
 			bundleAppears();
 			d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
 			.attr("value","Order Bundle").on("click",function() { 
