@@ -64,6 +64,7 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	//gives which EMR variable to indicate
 	function bundleAppears() {
 		d3.select("#patientData").append("div").attr("id","bundleDiv")
+			.style("float","left")
 			.style("width", "430px")
 			.style("height", "200px")
 			.style("overflow","auto")
@@ -89,15 +90,15 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	//open dummy CPOE module with orders pre-filled as an order set
 	//for now show Adult record
 	   		d3.select("#patientData").append("div").attr("id","orderDiv")
+			.style("float","right")
 			.style("width", "430px")
 			.style("height", "200px")
 			.style("overflow","auto")
-			.style("display","block")
 			.append("img").attr("id","bundleGraphic")
 				.attr('width', "410px")
 				.attr('height', "800px")
 				.attr("src","images/imagesFrom_sjrhem.ca_SepsisOrderSets/SEPSIS-ADULT-ORDER-SET-v2014Mar05.png")
-				.on("mouseover",function() {
+				.on("hover",function() {
 					d3.select("#patientData").append("div").attr("id","orderDiv")
 					.attr("src","images/BacteroidesFragilis_Gram.jpg");
 				});
@@ -245,14 +246,18 @@ function transformPatientData (patientData) {
 	return sirsObservations;
 };//transformPatientData function
 
-pullEMRtimer();
+pullEMRtimer(30);
+//this is encoded according to the TimeCode Standard in use 
+//20110305110000
+//thus 2 hours would be 20000
+//yearMtDaHrMnSc
+
 function pullEMRtimer (intervalinMin){
 //if intervalinMin is NaN or undefined then use 30 min
 //if zero it will fire immediately
 }
 
-checkCriteriaTimer();
-
+//checkCriteriaTimer(patientObjectsArray);
 //TIMING IS SOMETHING THAT IS LOCALLY CONTROLLED 
 //NOT IN THE KNOWLEDGE BASE FOR SIRS CRITERIA
 //checking to see if need to update
@@ -261,9 +266,38 @@ checkCriteriaTimer();
 //function dataFreshness( oberservationResultsArray, updateInterval) {
 //check timestamps for entry with current time to see if updateInterval
 function checkCriteriaTimer(pateints) {
-	//foreach patinet from pateints 
-	//if(updateTimer(patient)) then problem!
-	//updateTimer(patientObjectsArray[0]);
+
+//example for Event Time
+//this is also used for the Timer functions: see checkCriteriaTimer
+	function convertLocalEMReventTime (dataElement) {
+//console.log(dataElement);
+		if(dataElement != 0) {//send the data as a vMR compliant string
+			return dataElement.getFullYear()+""+(dataElement.getMonth()+1)+""+dataElement.getDate()+""+dataElement.getHours()+""+dataElement.getMinutes()+""+dataElement.getSeconds();
+		} 
+		if (typeof dataElement == 'undefined' || isNaN(dataElement)) { //If your local EMR model does not have one of the Criteria but you wish to still use this CDSS, then alter the code here
+			console.log("EMR DOES NOT CONTAIN TIME ELEMENT");
+			//alert("ERROR! CONTACT SUPPORT! EMR DOES NOT CONTAIN TIME ELEMENT");
+			//consider emailing Local CDSS maintenance team!
+			return "ERROR";
+		}
+		return 0; //if time is zero then no time has been assigned
+	}
+	
+  for (var i = 0; i <  pateints.length; i++){			//for demo EHR patients can be found in an array of objects <--- dependent on EHR local team
+	var patientResult = updateTimer(pateints[i]);
+	if(patientResult.nMetCriteria) { //then problem!
+		console.log("OH NO "+i);
+		console.log(patientResult);
+		d3.select("#patientData").select("#SCABmsg").append("span").text(function(patientResult) {
+				var msg = "Patient "+pateints[i].name+" needs update for: ";
+				for(var i= 0; i < patientResult.metObs.length; i++){
+					msg = msg+" "+SNOMEDtoLocalVariableSIRS(patientResult.metObs[i].observationFocus.code);
+				}
+				return msg;
+		});
+	}
+	
+	
 	function updateTimer(patientdata){
 		var currentTime = convertLocalEMReventTime(new Date);
 		var transformedPatientDataArray = transformPatientData(patientdata);
@@ -279,7 +313,7 @@ function checkCriteriaTimer(pateints) {
 		
 	  function updateChecker(patientData) {
 		//rule encoded for checking that the interval between checks has not passed
-		var adultIntervalToTest = 10; //this is encoded according to the TimeCode Standard in use 
+		var adultIntervalToTest = -10; //this is encoded according to the TimeCode Standard in use 
 			//20110305110000
 			//thus 2 hours would be 20000
 			//yearMtDaHrMnSc
@@ -395,6 +429,8 @@ function checkCriteriaTimer(pateints) {
 	}	  
 
 	}
+  } //end of for each patient
+  
 //then iterate through and check 
 	var dataNeedingUpdate = function () { 
 	var resultText = "";

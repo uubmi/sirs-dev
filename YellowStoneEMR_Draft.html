@@ -43,6 +43,7 @@
     	background-color: #9F9F9F;
 		color: #FFFFFF;
 		text-align:left;
+		display:inline-block;
 	}
 	
 	#emrName
@@ -121,6 +122,8 @@
 	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patients':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patients':{'id':'401','id':'504'}}};
 	var currentPatient;
 	var currentClinician = 'undefined';
+	
+
 
   function authentication(userID) {
 	  currentClinician = clinicianObjects[userID];
@@ -391,7 +394,7 @@
 <div style="width:1000px; margin:auto;">
 			<div id="developmentTesting" >
 				<input type="button" value="ResetEHR" onclick="location.reload();">
-				<!--input type="button" value="Run Development Test" onclick="testCases();" /-->
+				<input type="button" value="Run Development Test" onclick="testCases();" >
 			
 				<script src="sirs-cds.js" charset="utf-8"></script>
 				<script src="runCheck.js" charset="utf-8"></script>
@@ -402,6 +405,9 @@
 							console.log("assessing patient #"+i);
 							testSIRS(pat);
 						}
+							
+//checkCriteriaTimer(patientObjectsArray);
+
 					}
 				</script>
 			</div>

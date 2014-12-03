@@ -17,7 +17,7 @@ function SNOMEDtoLocalVariableSIRS (snomedCode){
 //required
 
 //Required:
-//matches SNOMED-CT codes to EHR data variable names
+//matches SNOMED-CT codes to EHR data display names
 function SNOMEDtoLocalDisplayName (snomedCode){
 	var snomedLocalMap = { 
 		"105723007":"temperature",
