@@ -135,8 +135,24 @@
 	//this EHR always starts with the first patient in the list of patients. One could implement an EHR where the last patient viewed would be shown, this would aid remembering where one left off.
 	if (userID == 'logout') {
         d3.select("#selectPatients").select("option").property('value',patientObjectsArray[0].name).attr('selected','selected'); 
-        delete currentClinician ;
-        location.reload();
+        currentClinician = '';
+		var el = document.getElementById('authenticationDiv'); 
+		el.style.display = '';  
+	
+		var el2 = document.getElementById('selectPatientDiv'); 
+		el2.style.display = 'none'; //} 
+		
+	    var el3 = document.getElementById('greetClinician'); 
+		el3.style.display = 'none'; 
+
+        var el4 = document.getElementById('profileName');
+        el4.innerHTML = '';
+        
+		var el5 = document.getElementById('patientDataDiv'); 
+		el5.style.display = 'none'; 
+		
+		var el6 = document.getElementById('imgId'); 
+		el6.style.display = 'none';  
         return;
     }
 	  
