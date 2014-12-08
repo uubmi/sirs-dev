@@ -62,7 +62,6 @@ function runCheck (oberservationResultsArray) {
 	//} 
 	
 	if (missingData.nMetCriteria == 0) { //if nothing is missing just ask for SIRS criteria check and send result
-		SIRScriteriaMessage = buildSIRScriteriaMessage(oberservationResultsArray);
 		function buildSIRScriteriaMessage (oberservationResultsArray){
 			//send SIRS Criteria observation message to relevant knowledge execution engine
 			var knowledgeExecutionEngineResult = assessRules(oberservationResultsArray, sirsCriteria, 0 );
@@ -75,6 +74,7 @@ function runCheck (oberservationResultsArray) {
 			//SIRS_criteriaChecker.js is responsible for making a message that the EHR can understand
 			return {"SIRS":knowledgeExecutionEngineResult, "missingData":missingData};
 		};
+		SIRScriteriaMessage = buildSIRScriteriaMessage(oberservationResultsArray);
 		return SIRScriteriaMessage;
 	} //if missingData.none
 	else { 
@@ -84,8 +84,6 @@ function runCheck (oberservationResultsArray) {
 		// what about single criteria met? with other values missing ??
 		 console.log("  !! missing data !!" );
 		 
-		//insert dummy values
-		var patientData_withDummyValues = addDummyData(oberservationResultsArray,missingData);
 		function addDummyData (oberservationResultsArray,missingData) {
 			var nonRiskValues = { // no sirs risk
 				"105723007":new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
@@ -120,6 +118,8 @@ function runCheck (oberservationResultsArray) {
 		}
 		//run execution engine with dummy values for missing
 		//IMPORTANT NOT TO SUBISTUTE THE patientData_withDummyValues for Real patient data even if they are missing
+		//insert dummy values
+		var patientData_withDummyValues = addDummyData(oberservationResultsArray,missingData);
 		var knowledgeExecutionEngineResult = assessRules(patientData_withDummyValues, sirsCriteria, 0 );
 		//will contain nMetCriteria:1 if SIRS criteria met and metObs with all the met observations
 		//WILL NEED TO REPORT if SIRS Criteria is met!

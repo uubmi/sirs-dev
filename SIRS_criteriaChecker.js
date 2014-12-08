@@ -35,19 +35,19 @@ var transformedPatientDataArray = transformPatientData (EMRobject.patientData) ;
 //console.log(runCheck(transformedPatientDataArray));
 //console.log("did we change EMR?");console.log(EMRobject.patientData);
 var sirsResults = new Array( );
-sirsResults = runCheck(transformedPatientDataArray); //HERE IS WHERE THE KNOWLEDGE EXECUTION ENGINE result canbe found
+sirsResults = runCheck(transformedPatientDataArray); //HERE IS WHERE THE KNOWLEDGE EXECUTION ENGINE result can be found
 
 //console.log("results");
 //console.log(sirsResults);
-
-//logic for action to be taken when patinet is not the current patient
-if ((typeof isCurrentlyViewedPatinet == 'undefined') || isCurrentlyViewedPatinet ) {
+//logic for action to be taken when patient is not the current patient
+if ((typeof EMRobject.isCurrentlyViewedPatinet == 'undefined') || EMRobject.isCurrentlyViewedPatinet ) {
 	handleSIRSpackage();
 }
 else {
 	if(sirsResults.SIRS.nMetCriteria == 1) {
 		//what to do when a patient that is not currently being viewed has SIRS criteria met
-		
+		console.log("return otherMetSIRS");
+        return "otherMetSIRS";
 	}
 }
 
@@ -117,12 +117,16 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	 }
 	 d3.select("#patientData").style("background-color","yellow");
 	 d3.select("#patientData").style("color","black");
-	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","informAdoc").attr("type","button").attr("value","Inform Doctor?").on("click",function (){
-		doctorInformed();
-		bundleAppears();
-		}).style("color","red").style("font-size","20px").style("font-weight","bold");
-	}
+     var existingSCAB = d3.select("#SCABmsg");
+     console.log("existingSCAB: "+existingSCAB);
+     if (existingSCAB == "") { 
+	     d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
+	     d3.select("#patientData").select("#SCABmsg").append("input").attr("id","informAdoc").attr("type","button").attr("value","Inform Doctor?").on("click",function (){
+		    doctorInformed();
+		    bundleAppears();
+		    }).style("color","red").style("font-size","20px").style("font-weight","bold");
+	     }
+    }
 	
 	if (EMRobject.clinician.role == "Doctor") {
 		//sirsResponse(object,"physician");
@@ -133,15 +137,19 @@ if ( document.getElementById("#SCABmsg") == null ) { //if SCABmsg not there
 	 }
 	 d3.select("#patientData").style("background-color","yellow");
 	 d3.select("#patientData").style("color","black");
-	 d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
-	 d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button").attr("value","Documented infection or a potential source of infection?").on("click",function() {
+     var existingSCAB = d3.select("#SCABmsg");
+     console.log("existingSCAB: "+existingSCAB);
+     if (existingSCAB == "") { 
+	     d3.select("#patientData").append("div").attr("id","SCABmsg").style("color","red").append("span").style("font-size","40px").style("font-weight","bold").text("SIRS Criteria Met"); 
+	     d3.select("#patientData").select("#SCABmsg").append("input").attr("id","documentInfectionQuestion").attr("type","button").attr("value","Documented infection or a potential source of infection?").on("click",function() {
 			bundleAppears();
 			d3.select("#patientData").select("#SCABmsg").select("#documentInfectionQuestion")
 			.attr("value","Order Bundle").on("click",function() { 
 				orderMake();
 			}).style("font-size","40px");
 		}).style("color","red").style("font-size","20px").style("font-weight","bold");
-	}
+	 }
+    }
 	
   }
 }//if SIRS bar exists will not remake it
@@ -440,7 +448,9 @@ function checkCriteriaTimer(pateints) {
 	};
 //return dataNeedingUpdate; 
 //}
-// !! add timer Independent of data entry!!	
+
+    
+    
 }
 
 
