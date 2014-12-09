@@ -430,9 +430,17 @@
 </head>
 <body style="margin:0;padding:0;background:azure;" >
 <div style="width:1000px; margin:auto;">
+
+<div id="backGroundScripts">
+<script> 
+pullEMRtimer(30000,patientObjectsArray); //sets and starts timer for checking for update events
+//time is encoded as milliseconds
+//30000 is 30 seconds
+</script>
+</div>
 			<div id="developmentTesting" >
 				<input type="button" value="ResetEHR" onclick="location.reload();">
-				<input type="button" value="Run Development Test" onclick="testCases();" >
+				<!--input type="button" value="Run Development Test" onclick="testCases();" -->
 				<input type="button" value="Simulate Lab Reporting" onclick="testLabReport();" >
 			
 				<script src="sirs-cds.js" charset="utf-8"></script>
@@ -441,17 +449,7 @@
 				<script>
 					//for development testing
 					function testCases() {
-						window.setTimeout(
-							function(){
-								alert("gotcha");
-								checkCriteriaTimer(patientObjectsArray);
-								testCases();}
-							, 15000); //set here
-						//remove old message
-						d3.selectAll("#timingMessage").remove();
-						//get new one
-						var TimingMessge = checkCriteriaTimer(patientObjectsArray);
-						console.log(TimingMessge);
+
 					}
 					//for lab report testing
 					function testLabReport() {

@@ -254,15 +254,23 @@ function transformPatientData (patientData) {
 	return sirsObservations;
 };//transformPatientData function
 
-pullEMRtimer(30);
-//this is encoded according to the TimeCode Standard in use 
-//20110305110000
-//thus 2 hours would be 20000
-//yearMtDaHrMnSc
 
-function pullEMRtimer (intervalinMin){
-//if intervalinMin is NaN or undefined then use 30 min
+
+function pullEMRtimer (intervalbetweenChecksInMlliseconds,thePatients){
+//intervalbetweenChecksInMlliseconds is encoded as milliseconds
+//if intervalinMin is NaN or undefined or
 //if zero it will fire immediately
+	window.setTimeout(
+		function(){
+			alert("gotcha");
+			//remove old message
+			d3.selectAll("#timingMessage").remove();
+			//get new one
+			var TimingMessge = checkCriteriaTimer(thePatients);
+			console.log(TimingMessge)
+		}		
+	, intervalbetweenChecksInMlliseconds); //set here
+;
 }
 
 //checkCriteriaTimer(patientObjectsArray);
@@ -331,7 +339,7 @@ function checkCriteriaTimer(pateints) {
 		
 	  function updateChecker(patientData) {
 		//rule encoded for checking that the interval between checks has not passed
-		var adultIntervalToTest = 15; //this is encoded according to the TimeCode Standard in use 
+		var adultIntervalToTest = 20000; //this is encoded according to the TimeCode Standard in use 
 			//20110305110000
 			//thus 2 hours would be 20000
 			//yearMtDaHrMnSc
