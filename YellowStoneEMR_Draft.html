@@ -4,6 +4,20 @@
 <head>
   <title>Free Clinic</title>
   <style type="text/css">
+	div {
+	 border-radius:18px;
+	}
+	input {
+		border-radius:18px;
+	}
+  
+	#disclaimer {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+	}
+  
 	#authenticationDiv
 	{
 		padding:1%;
@@ -59,6 +73,7 @@
 	}
 	
 	#header{
+		padding:2px;
 		margin:5px;
 		width:1105px;
 		height:100px;
@@ -89,6 +104,8 @@
 <!--
 <link rel="stylesheet" href="css/bootstrap.min.css">
 -->
+
+
   <script src="d3/d3.js" charset="utf-8"></script>
 <!--I made a new change-->
   <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
@@ -461,8 +478,8 @@
 
   <div id="greetClinician" style="display:none;"></div>
   
-	<div class="mainContent">
-		<div id="authenticationDiv" > <!--needs to cover entire page-->
+	<div class="mainContent" >
+		<div id="authenticationDiv"  > <!--needs to cover entire page-->
 			<form id="getUserId"><!-- method="post" action="authentication(value);" -->
 			<!--get id then alter value on page for id-->
 				<div class="question">
@@ -514,9 +531,23 @@
 
 			
 		</div>
-  <svg height="60" width="200">
-   <text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
-</svg>
+  <svg id="disclaimer" height="60" width="200" >
+   <text id="disclaimerStatement" x="0" y="100" fill="brown" font-size="50" transform="rotate(30 20,40)">DEMO EMR ONLY</text>
+	<script>
+		var backgroundRectangle = document.getElementById("disclaimer").getElementById("disclaimerStatement").getBBox();
+		var thetext = document.getElementById("disclaimer").getElementById("disclaimerStatement");
+		var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+			rect.setAttribute("id","theRectangle");
+			rect.setAttribute("x", backgroundRectangle.x);
+			rect.setAttribute("y", backgroundRectangle.y);
+			rect.setAttribute("width", backgroundRectangle.width);
+			rect.setAttribute("height", backgroundRectangle.height);
+			rect.setAttribute("fill", "#FAFAB4");//"#FAFAB4");// "#FDFEA6");
+			rect.setAttribute("transform", "rotate(30 20,40)");
+			document.getElementById("disclaimer").insertBefore(rect, thetext);
+		//borrowed from :http://stackoverflow.com/questions/15500894/background-color-of-text-in-svg
+	</script>
+  </svg>
 	  
 		<img id="imgId" src = "https://docs.google.com//uc?id=0B6x8Qg3KYwHXVVpxcHhoMzBtaTQ" style="display:none;">
 

@@ -89,7 +89,7 @@ function runCheck (oberservationResultsArray) {
 				"105723007":new ObservationResult("105723007","2.16.840.1.113883.6.5","SNOMED-CT","Body temperature","decimal","37.5","20110305110000"),
 				"301113001":new ObservationResult("301113001","2.16.840.1.113883.6.5","SNOMED-CT","Heart rate","decimal","89","20110305110000"),
 				"301283003":new ObservationResult("301283003","2.16.840.1.113883.6.5","SNOMED-CT","Respiratory rate","decimal","19","20110305110000"),
-				"373677008":new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","23","20110305110000"),
+				"373677008":new ObservationResult("373677008","2.16.840.1.113883.6.5","SNOMED-CT","PaCO2","decimal","15","20110305110000"),
 				"365630000":new ObservationResult("365630000","2.16.840.1.113883.6.5","SNOMED-CT","WBC count","decimal","10.1","20110305110000"),
 				"442113000":new ObservationResult("442113000","2.16.840.1.113883.6.5","SNOMED-CT","Band neutrophil count","decimal","0.05","20110305110000")
 			};
