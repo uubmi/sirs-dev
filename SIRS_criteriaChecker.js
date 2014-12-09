@@ -298,15 +298,15 @@ function checkCriteriaTimer(pateints) {
 		console.log("OH NO "+i);
 		console.log(patientResult);
 		var currentPatient = pateints[i];
-		var timingResults = d3.select("#patientData").select("#SCABmsg").append("span").data([patientResult,currentPatient]).attr("class","timmingMsg").text(function(patientResult) {
-				var msg = "Patient "+currentPatient.name+" needs update for: ";
+		var timingResults = d3.select("#patientDataDiv").append("span").attr("id","timingMessage").data([patientResult,currentPatient]).attr("class","timmingMsg").text(function(patientResult) {
+				var msg = "Patient "+currentPatient.name+" time to update";
 				for(var i= 0; i < patientResult.metObs.length; i++){
 					
-					msg = msg+" "+SNOMEDtoLocalVariableSIRS(patientResult.metObs[i].observationFocus.code);
+					msg = msg+", "+SNOMEDtoLocalDisplayName(patientResult.metObs[i].observationFocus.code);
 				}
 				console.log(msg);
 				return msg;
-		});
+		}).append("br");
 	}
 	
 	//single patient evaluated
@@ -331,7 +331,7 @@ function checkCriteriaTimer(pateints) {
 		
 	  function updateChecker(patientData) {
 		//rule encoded for checking that the interval between checks has not passed
-		var adultIntervalToTest = -10; //this is encoded according to the TimeCode Standard in use 
+		var adultIntervalToTest = 15; //this is encoded according to the TimeCode Standard in use 
 			//20110305110000
 			//thus 2 hours would be 20000
 			//yearMtDaHrMnSc

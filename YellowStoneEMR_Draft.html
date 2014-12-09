@@ -441,12 +441,15 @@
 				<script>
 					//for development testing
 					function testCases() {
-					//	window.setTimeout(
-					//		function(){
-					//			alert("gotcha");
-								//checkCriteriaTimer(patientObjectsArray);
-					//			testCases();}
-					//		, 15000); //set here
+						window.setTimeout(
+							function(){
+								alert("gotcha");
+								checkCriteriaTimer(patientObjectsArray);
+								testCases();}
+							, 15000); //set here
+						//remove old message
+						d3.selectAll("#timingMessage").remove();
+						//get new one
 						var TimingMessge = checkCriteriaTimer(patientObjectsArray);
 						console.log(TimingMessge);
 					}
