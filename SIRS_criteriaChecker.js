@@ -260,17 +260,19 @@ function pullEMRtimer (intervalbetweenChecksInMlliseconds,thePatients){
 //intervalbetweenChecksInMlliseconds is encoded as milliseconds
 //if intervalinMin is NaN or undefined or
 //if zero it will fire immediately
-	window.setTimeout(
-		function(){
-			alert("gotcha");
-			//remove old message
-			d3.selectAll("#timingMessage").remove();
-			//get new one
-			var TimingMessge = checkCriteriaTimer(thePatients);
+var patientsToCheck = patientObjectsArray; //////////IN THIS DEMO WE JUST USE ALL PATIENTS/////
+	//window.setTimeout(
+	window.setInterval( function(){
+		//	alert("gotcha");
+
+			var removeOldMessage = d3.selectAll("#timingMessage").remove();
+			//get new message and post it
+			var TimingMessge = checkCriteriaTimer(patientsToCheck);
 			console.log(TimingMessge)
 		}		
 	, intervalbetweenChecksInMlliseconds); //set here
-;
+	//you can use clearInterval to stop calling the function if you need to
+	//but just do whatever is easiest/cleanest
 }
 
 //checkCriteriaTimer(patientObjectsArray);

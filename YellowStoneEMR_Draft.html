@@ -114,17 +114,22 @@
   <script>
 	var startTime = new Date(); //;get current time. //20110305110000 yearmonthdayhour
 	
+//FOR DEVELOPMENT!!!! altering dates of a few patients
+Date.prototype.subtractMin= function(mins){
+    this.setMinutes(this.getMinutes()-mins);
+    return this; }
+	
 	// this is the EMR data and patient models - simplified but different than the SIRS CDSS to demonstrate ability to accommodate any model
 	var patientObjectsArray = [ 
 		{'id':'401','name':'Issac A Lot','gender':'male','temperature':{'value':'40','evenTTime':new Date()}
-			,'heartRate':{'value':'120','evenTTime':new Date()}
+			,'heartRate':{'value':'120','evenTTime':new Date().subtractMin(125)}
 			,'respiratoryRate':{'value':'24','evenTTime':new Date()}
 			,'PaCO2':{'value':'23','evenTTime':new Date()}
 			,'whiteBloodCellCount':{'value':'15','evenTTime':new Date()}
 			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':1 SIRS met!
 		{'id':'504','name':'Ima Eel Thee','gender':'female','temperature':{'value':'37','evenTTime':new Date()}
 			,'heartRate':{'value':'70','evenTTime':new Date()}
-			,'respiratoryRate':{'value':'15','evenTTime':new Date()}
+			,'respiratoryRate':{'value':'15','evenTTime':new Date().subtractMin(118)}
 			,'PaCO2':{'value':'23','evenTTime':new Date()}
 			,'whiteBloodCellCount':{'value':'8','evenTTime':new Date()}
 			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':0 SIRS not met, no missing values	
@@ -135,6 +140,9 @@
 			,'whiteBloodCellCount':{'value':'default','evenTTime':new Date()}
 			,'bandNeutrophilCount':{'value':'default','evenTTime':new Date()}} //'SIRScriteria':-1 missing values  
 	]; 
+	
+	//FOR DEVELOPMENT!!!!
+	//altering dates of a few patients
 	
 	var clinicianObjects = {'111':{'name':'Jack','role':'Nurse','patients':{'id':'401','id':'504'}},'101':{'name':'Jill','role':'Doctor','patients':{'id':'401','id':'504'}}};
 	var currentPatient;
@@ -433,9 +441,11 @@
 
 <div id="backGroundScripts">
 <script> 
-pullEMRtimer(30000,patientObjectsArray); //sets and starts timer for checking for update events
+
+pullEMRtimer(15000);//patientObjectsArray); //sets and starts timer for checking for update events
 //time is encoded as milliseconds
 //30000 is 30 seconds
+
 </script>
 </div>
 			<div id="developmentTesting" >
