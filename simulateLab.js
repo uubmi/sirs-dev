@@ -2,8 +2,11 @@ var labTests = ['whiteBloodCellCount', 'bandNeutrophilCount'];
 
 // !! add timer Independent of data entry!!	
 function simulateLab(patientIndex, labTestIndex, testValue) {
-    disableLabValueMutation();
+//    disableLabValueMutation();
     console.log("simulateLab");
+   	if(typeof currentClinician == 'undefined') {
+        return;
+    }
 //    var patientIndex = Math.floor((Math.random() * patientObjectsArray.length));
     console.log("simulateLab "+patientIndex+" "+labTestIndex+" "+testValue);
     var patientID = patientObjectsArray[patientIndex].id;

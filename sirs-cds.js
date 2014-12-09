@@ -111,7 +111,7 @@ var sirsCriteria =  //knowledge representation!!!!!
         {minRequirement: 1, 
          rules : new Array (   
             new Rule("2.16.840.1.113883.6.5", "365630000", "gt", "decimal", 12),  // Whole white blood cell count > 12.0(x10^9/L)  {codeSystem : "2.16.840.1.113883.6.5", code : "365630000", comparison: "gt", valueType: "decimal", value: 12}
-            new Rule("2.16.840.1.113883.6.5", "365630000", "lt", "decimal", 4),  // Whole white blood cell count < 4.0(x10^9/L)    {codeSystem : "2.16.840.1.113883.6.5", code : "365630000", comparison: "lt", valueType: "decimal", value: 4}
+            new Rule("2.16.840.1.113883.6.5", "365630000", "lt", "decimal", 4)  // Whole white blood cell count < 4.0(x10^9/L)    {codeSystem : "2.16.840.1.113883.6.5", code : "365630000", comparison: "lt", valueType: "decimal", value: 4}
          )},
         new Rule("2.16.840.1.113883.6.5", "442113000", "gt", "decimal", 0.1)  // Immature neutrophil count > 0.10(fraction)    {codeSystem : "2.16.840.1.113883.6.5", code : "442113000", comparison: "gt", valueType: "decimal", value: 0.1}
      )
