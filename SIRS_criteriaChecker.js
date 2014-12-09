@@ -293,25 +293,35 @@ function checkCriteriaTimer(pateints) {
 	
   for (var i = 0; i <  pateints.length; i++){			//for demo EHR patients can be found in an array of objects <--- dependent on EHR local team
 	var patientResult = updateTimer(pateints[i]);
+	patientResult.patientName = pateints[i].name;
 	if(patientResult.nMetCriteria) { //then problem!
 		console.log("OH NO "+i);
 		console.log(patientResult);
-		d3.select("#patientData").select("#SCABmsg").append("span").text(function(patientResult) {
-				var msg = "Patient "+pateints[i].name+" needs update for: ";
+		var currentPatient = pateints[i];
+		var timingResults = d3.select("#patientData").select("#SCABmsg").append("span").data([patientResult,currentPatient]).attr("class","timmingMsg").text(function(patientResult) {
+				var msg = "Patient "+currentPatient.name+" needs update for: ";
 				for(var i= 0; i < patientResult.metObs.length; i++){
+					
 					msg = msg+" "+SNOMEDtoLocalVariableSIRS(patientResult.metObs[i].observationFocus.code);
 				}
+				console.log(msg);
 				return msg;
 		});
 	}
 	
-	
+	//single patient evaluated
 	function updateTimer(patientdata){
 		var currentTime = convertLocalEMReventTime(new Date);
 		var transformedPatientDataArray = transformPatientData(patientdata);
 		var resultUpdateCheck = updateChecker(transformedPatientDataArray);
+		console.log("checkTime");
 		
 		console.log(resultUpdateCheck);
+		return resultUpdateCheck;
+		//seems fine
+		//console.log(patientdata);
+		//console.log(transformedPatientDataArray);
+		
 	  function actionTimerChecker(patientData) {
 		//requires checking
 			//has SIRS been met
@@ -351,11 +361,13 @@ function checkCriteriaTimer(pateints) {
 			var rules = assessmentPlan["rules"];
 			var metObsResults = [];
 			var assessedResults;
+			
 			for(var i = 0, rule; rule = rules[i++];) {
 				if ('undefined' !== typeof (rules[0].comparison) ) {  
 					for (var k = 0, obs; obs = obsResults[k++];) {
 						if (checkTime(obs, rule)) {
-		//                    console.log(" criteria met "+rule["code"]+" "+rule["comparison"]+" "+rule["value"]+"("+obs["observationValue"]["value"]+")");
+		 console.log(" criteria met "+rule["code"]+" "+rule["comparison"]+" "+rule["value"]+"("+obs.observationEventTime.observationEventTime+")");
+		
 							criteriaMet++;
 							metObsResults.push(obs);
 						}    
@@ -369,7 +381,11 @@ function checkCriteriaTimer(pateints) {
 				}        
 			}
 			if (criteriaMet >= assessmentPlan["minRequirement"]) {
-		//        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+	        console.log("level "+level+", criteria met: "+criteriaMet+" minReq: " + assessmentPlan["minRequirement"]);
+					console.log("forgtit");
+					console.log(metObsResults);
+					//console.log(nMetCriteria);
+					//pizza
 				return { 
 					nMetCriteria: 1,
 					metObs: metObsResults
@@ -383,7 +399,7 @@ function checkCriteriaTimer(pateints) {
 			}
 		}
 		
-		function checkTime(obsResult, rule) {
+	function checkTime(obsResult, rule) {
 	//contains ability to use a large number of comparisons in addition to missing to allow for customization/flexibility 
 	//for cases where a criteria is only needed when another one is missing!
 		var returnResult = false; //default is the the rule has not been met
@@ -438,19 +454,8 @@ function checkCriteriaTimer(pateints) {
 
 	}
   } //end of for each patient
-  
-//then iterate through and check 
-	var dataNeedingUpdate = function () { 
-	var resultText = "";
-	//for oberservationResultsArray {
-	//};
-	return resultText;
-	};
-//return dataNeedingUpdate; 
-//}
 
     
-    
-}
+}//checkCriteriaTimer
 
 

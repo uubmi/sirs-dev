@@ -441,13 +441,14 @@
 				<script>
 					//for development testing
 					function testCases() {
-						for (var i = 0, pat; pat = patients[i++];) {
-							console.log("assessing patient #"+i);
-							testSIRS(pat);
-						}
-							
-//checkCriteriaTimer(patientObjectsArray);
-
+					//	window.setTimeout(
+					//		function(){
+					//			alert("gotcha");
+								//checkCriteriaTimer(patientObjectsArray);
+					//			testCases();}
+					//		, 15000); //set here
+						var TimingMessge = checkCriteriaTimer(patientObjectsArray);
+						console.log(TimingMessge);
 					}
 					//for lab report testing
 					function testLabReport() {
