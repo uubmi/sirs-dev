@@ -89,7 +89,32 @@ var Rule = function (codeSystem, code, comparison, valueType, value) {
     this.valueType = valueType;
     this.value = value;
 }
+
+var checkTempUpperBound = new Rule("2.16.840.1.113883.6.5", "105723007", "gt", "decimal", 38); // Body temperature > 38(C)  
+var checkTempLowerBound = new Rule("2.16.840.1.113883.6.5", "105723007", "lt", "decimal", 36);  // Body temperature < 36(C) 
+var sirsCriterion1 = {minRequirement: 1, rules : new Array (checkTempUpperBound, checkTempLowerBound)};
+
+var sirsCriterion2 = new Rule("2.16.840.1.113883.6.5", "301113001", "gt", "decimal", 90); // Heart rate > 90(beats/min)  
+
+var checkRRUpperBound = new Rule("2.16.840.1.113883.6.5", "301283003", "gt", "decimal", 20);     // Respiratory rate > 20 (breaths/min)
+var checkPaCO2LowerBound = new Rule("2.16.840.1.113883.6.5", "373677008", "lt", "decimal", 32);  // PaCO2 < 32(mmHg)  
+var sirsCriterion3 = {minRequirement: 1, rules : new Array (checkRRUpperBound, checkPaCO2LowerBound)};
+
+var checkWBCUpperBound = new Rule("2.16.840.1.113883.6.5", "365630000", "gt", "decimal", 12);  // Whole white blood cell count > 12.0(x10^9/L)
+var checkWBCLowerBound = new Rule("2.16.840.1.113883.6.5", "365630000", "lt", "decimal", 4);   // Whole white blood cell count < 4.0(x10^9/L) 
+var checkWBC = {minRequirement: 1, rules : new Array (checkWBCUpperBound, checkWBCLowerBound)};
+var checkBandsUpperBound = new Rule("2.16.840.1.113883.6.5", "442113000", "gt", "decimal", 0.1);  // Immature neutrophil count > 0.10(fraction)
+var sirsCriterion4 = {minRequirement: 1, rules : new Array (checkWBC, checkBandsUpperBound)};
+
 var sirsCriteria =  //knowledge representation!!!!!
+{minRequirement: 2, 
+ rules : new Array (sirsCriterion1, sirsCriterion2, sirsCriterion3, sirsCriterion4),
+ actionsWhenMet : [ "sirs risk", "Measure lactate level", "Order blood cultures"],
+ actionsNotMet : ["not sirs risk"]
+};    
+
+
+var sirsCriteria_original =  //knowledge representation!!!!!
 {minRequirement: 2, 
  rules : new Array (
     {minRequirement: 1, 
