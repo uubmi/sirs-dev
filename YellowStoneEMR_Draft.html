@@ -8,7 +8,7 @@
 	 border-radius:18px;
 	}
 	input {
-		border-radius:18px;
+		border-radius:8px;
 	}
   
 	#disclaimer {
@@ -108,8 +108,12 @@
 
   <script src="d3/d3.js" charset="utf-8"></script>
 <!--I made a new change-->
-  <script src="SIRS_criteriaChecker.js" charset="utf-8"></script>
-  <script src="localTerminologyServer.js" charset="utf-8"></script>
+  <script src="scripts/SIRS_criteriaChecker.js" charset="utf-8"></script>
+  <script src="scripts/localTerminologyServer.js" charset="utf-8"></script>
+  <script src="scripts/sirs-cds.js" charset="utf-8"></script>
+  <script src="scripts/runCheck.js" charset="utf-8"></script>
+  
+  <script src="scripts/simulateLab.js" charset="utf-8"></script>
   
   <script>
 	var startTime = new Date(); //;get current time. //20110305110000 yearmonthdayhour
@@ -129,7 +133,7 @@ Date.prototype.subtractMin= function(mins){
 			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':1 SIRS met!
 		{'id':'504','name':'Ima Eel Thee','gender':'female','temperature':{'value':'37','evenTTime':new Date()}
 			,'heartRate':{'value':'70','evenTTime':new Date()}
-			,'respiratoryRate':{'value':'15','evenTTime':new Date().subtractMin(118)}
+			,'respiratoryRate':{'value':'15','evenTTime':new Date().subtractMin(119)}
 			,'PaCO2':{'value':'23','evenTTime':new Date()}
 			,'whiteBloodCellCount':{'value':'8','evenTTime':new Date()}
 			,'bandNeutrophilCount':{'value':'0.05','evenTTime':new Date()}}, //'SIRScriteria':0 SIRS not met, no missing values	
@@ -452,10 +456,7 @@ pullEMRtimer(15000);//patientObjectsArray); //sets and starts timer for checking
 				<input type="button" value="ResetEHR" onclick="location.reload();">
 				<!--input type="button" value="Run Development Test" onclick="testCases();" -->
 				<input type="button" value="Simulate Lab Reporting" onclick="testLabReport();" >
-			
-				<script src="sirs-cds.js" charset="utf-8"></script>
-				<script src="runCheck.js" charset="utf-8"></script>
-				<script src="simulateLab.js" charset="utf-8"></script>
+
 				<script>
 					//for development testing
 					function testCases() {
